@@ -1,7 +1,7 @@
 <?php
 session_start();
 require '../class/classConnect.php';
-require '../class/classDisconnect.php';
+require '../class/classUser.php';
 
 // Initialise la connexion à la base de données
 $db = new ConnectToDatabase();
@@ -30,8 +30,8 @@ if ($_POST) {
         if ($user && password_verify($user_password, $user['password'])) {
             // Les informations de connexion sont correctes
             $_SESSION['username'] = $user['username'];
-            $_SESSION['email'] = $user['email'];
-
+            // Ajouter cette ligne pour stocker l'ID de l'utilisateur dans la session
+            $_SESSION['user_id'] = $user['id']; // Assurez-vous que le champ dans votre table est nommé 'id'
             // Rediriger vers une page de bienvenue après la connexion
             header("Location: welcome.php");
             exit();
@@ -55,25 +55,78 @@ if ($_POST) {
     <title>QuizNight</title>
 </head>
 <body>
-    <h2>CONNEXION</h2>
-    <?php
-    // Faire apparaître le message
-    if (isset($message)) {
-        echo "<p>$message</p>";
-    }
-    ?>
-    <form action="" method="post">
-        <label for="username">Nom d'utilisateur :</label>
-        <input type="text" id="username" name="username" required><br><br>
-        
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" required><br><br>
-        
-        <input type="submit" value="Se connecter">
-    </form>
-    <br>
-    <a href="created.php">Nouveau ? Créez vous un compte</a>
-    <br>
-    <p><a href="index.php">Retour à la page d'accueil</a></p>
+    <style>
+        body{
+            background-color:#F8F8FF;
+            display: flex;
+            flex-direction : column;
+            justify-content : center;
+            align-items : center;
+            height : 95vh;
+            font-family: arial;
+        }
+
+        .box{
+            background-color:white;
+            box-shadow: 0 0 30px 1px #DCDCDC;
+            padding: 50px 100px 50px 100px;
+            display:flex;
+            flex-direction:column;
+            text-align:center;
+            border-radius:20px;
+        }
+
+        .label{
+            margin:20px;
+        }
+
+        input{
+            height:30px;
+            width:250px;
+        }
+
+        button{
+            padding:15px;
+            border:none;
+            background-color:#F8F8FF;
+            border-radius:10px;
+            box-shadow: #DCDCDC 0 0 5px 1px;     
+        }
+
+        button:active {
+            transform: translateY(10px); /* Correction ici */
+        }
+
+        a{
+            text-decoration:none;
+            color:blue;
+        }
+
+        a:hover {
+            color:green;
+        }
+
+    </style>
+    <div class="box">
+        <h2>CONNEXION</h2>
+        <form action="" method="post">
+            <div class="label">
+                <label for="username">Nom d'utilisateur</label>
+            </div>
+            <input type="text" id="username" name="username" required><br><br>
+            
+            <div class="label">
+                <label for="password">Mot de passe</label>
+            </div>
+            <input type="password" id="password" name="password" required><br><br>
+            
+            <button type="submit">Se connecter</button>
+        </form>
+        <br>
+        <br>
+        <a href="created.php">Nouveau ? Créez vous un compte</a>
+        <br>
+        <a href="../index.php">Retour à la page d'accueil</a>
+    </div>
 </body>
 </html>

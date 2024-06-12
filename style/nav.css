@@ -1,0 +1,23 @@
+        nav{
+            background-color:yellow;
+            display:flex;
+        }
+
+        a{
+            margin:20px;
+        }
+
+        h1, p{
+            text-align:center;
+        }
+
+        #container{
+            display : flex;
+            gap:20px;
+        }
+
+        #box{
+            width:150px;
+            margin : 50px;
+            text-align:center;
+        }
