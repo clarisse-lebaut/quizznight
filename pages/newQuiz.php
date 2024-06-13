@@ -11,18 +11,31 @@
     session_start();
     require '../class/classConnect.php';
     require '../class/classNavConnect.php';
+    require '../class/classQuizz.php';
+    require '../class/classQuestion.php';
 
     // Créer une instance de la classe de connexion
     $dbConnection = new ConnectToDatabase();
     $connexion = $dbConnection->getConnexion();
     $navBar = new NavConnect();
+    $quiz_request = new createQuizz();
+    $question_request = new Question();
 
-    // Gestion de l'ajout de question
-    if (isset($_GET['add_question'])) {
-        $question = $_GET['question'];
-        $answer = $_GET['answer'];
-        $_SESSION['questions'][] = array('question' => $question, 'answer' => $answer);
-    } 
+    // Gestion de l'ajout de quiz et de questions
+    if (isset($_POST['add_question'])) {
+        $question_text = $_POST['question'];
+        $answer = $_POST['answer'];
+
+        if (!isset($_SESSION['quiz_id'])) {
+            $quiz_title = "Quiz de " . htmlspecialchars($_SESSION['username']); // Exemple de titre
+            $creatorId = $_SESSION['user_id'];
+            $_SESSION['quiz_id'] = $quiz_request->createNewQuizz($connexion, $quiz_title, $creatorId);
+        }
+
+        $quiz_id = $_SESSION['quiz_id'];
+        $_SESSION['questions'][] = array('question' => $question_text, 'answer' => $answer);
+        $question_request->createQuestions($connexion, $question_text, $quiz_id);
+    }
 
     // Gestion de la suppression de question
     if (isset($_GET['delete'])) {
@@ -39,7 +52,7 @@
 
     <h2><?php echo htmlspecialchars($_SESSION['username']); ?>, entrez vos questions et vos réponses !</h2>
 
-    <form action="" method="GET"> 
+    <form action="" method="POST"> 
         <div class="questions">
             <label for="question">Taper une question</label><br>
             <input id="question" type="text" name="question" required>
@@ -61,13 +74,12 @@
             echo "
                 <form method='GET' style='display: inline;'>
                     <input type='hidden' name='index' value='$index'>
-                    <p>Q : {$question['question']}</p>
-                    <p>A : {$question['answer']}</p>
+                    <p>Q : " . htmlspecialchars($question['question']) . "</p>
+                    <p>A : " . htmlspecialchars($question['answer']) . "</p>
                     <button type='submit' name='delete'>Supprimer</button>
                 </form>";
         }
     }
     ?>
-
 </body>
 </html>
