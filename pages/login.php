@@ -9,7 +9,7 @@ $connexion = $dbConnection->getConnexion();
 
 $error_message = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_POST) {
     $username = $_POST["username"];
     $password = $_POST["password"];
 

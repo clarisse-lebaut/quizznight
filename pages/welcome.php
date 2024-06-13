@@ -27,12 +27,12 @@ function isLoggedIn()
     <header>
         <nav class="navbar">
             <ul>
-                <li><a class="a_style" href="../../index.php">Accueil</a></li>
+                <li><a class="a_style" href="./welcome.php">Accueil</a></li>
                 <?php if (isLoggedIn() && $_SESSION["roles"] == "admin"): ?>
-                    <li><a class="a_style" href="admin.php">Gestion</a></li>
                     <li><a class="a_style" href="./create_pages/create_quiz.php">Créer un quiz</a></li>
-                    <li><a class="a_style" href="./add_pages/add_answers.php">Ajouter des réponses</a></li>
-                    <li><a class="a_style" href="./add_pages/add_questions.php">Ajouter des questions</a></li>
+                    <li><a class="a_style" href="../add_pages/add_answers.php">Ajouter des réponses</a></li>
+                    <li><a class="a_style" href="../add_pages/add_questions.php">Ajouter des questions</a></li>
+                    <li><a class="a_style" href="./admin.php">Gestion</a></li>
                     <li><a class="a_style" href="./disconnect.php">Déconnexion</a></li>
                 <?php endif; ?>
             </ul>

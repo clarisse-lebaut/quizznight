@@ -16,7 +16,7 @@ try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST) {
         $quiz_id = $_POST["quiz_id"];
         $question_text = $_POST["question_text"];
 
@@ -56,8 +56,8 @@ try {
 <header>
     <nav>
         <ul>
-            <li><a href="../welcome.php">Retour à l'index</a></li>
-            <li><a href="../admin.php">Administration</a></li>
+            <li><a href="../pages/welcome.php">Retour à l'index</a></li>
+            <li><a href="../pages/admin.php">Administration</a></li>
         </ul>
     </nav>
 </header>

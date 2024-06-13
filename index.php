@@ -35,8 +35,6 @@ function isLoggedIn()
                 <?php endif; ?>
                 <li><a class="a_style" href="./pages/create_pages/create_user.php">Créer un compte</a></li>
                 <li><a class="a_style" href="./pages/login.php">Connexion</a></li>
-                <li><a class="a_style" href="./pages/add_pages/add_answers.php">Ajouter des réponses</a></li>
-                <li><a class="a_style" href="./pages/add_pages/add_questions.php">Ajouter des questions</a></li>
             </ul>
         </nav>
     </header>

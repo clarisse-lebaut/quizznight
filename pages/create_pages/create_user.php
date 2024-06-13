@@ -34,7 +34,7 @@ if ($_POST) {
         $stmt->execute();
 
         // Redirection vers une page appropriée après la création de l'utilisateur
-        header("Location: index.php");
+        header("Location: index.php"); // Vous pouvez modifier cette URL selon vos besoins
         exit();
     } catch (PDOException $e) {
         echo "Erreur: " . $e->getMessage(); // Gestion des erreurs de connexion à la base de données

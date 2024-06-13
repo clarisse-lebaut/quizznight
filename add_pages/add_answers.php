@@ -56,8 +56,8 @@ try {
 <header>
     <nav>
         <ul>
-            <li><a href="../welcome.php">Retour à l'index</a></li>
-            <li><a href="../admin.php">Administration</a></li>
+            <li><a href="../pages/welcome.php">Retour à l'index</a></li>
+            <li><a href="../pages/admin.php">Administration</a></li>
         </ul>
     </nav>
 </header>
