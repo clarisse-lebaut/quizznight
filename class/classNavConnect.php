@@ -1,75 +1,81 @@
 <?php
-    require 'classDisconnect.php';
-    $disconnect = new Disconnect();
-    $disconnect->disconnectModul();
+require 'classDisconnect.php';
+$disconnect = new Disconnect();
+$disconnect->disconnectModul();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <style>
-        body{
-            margin:0;
-            font-family:arial;
+        body {
+            margin: 0;
+            font-family: arial;
         }
 
-        nav{
-            background-color:#20B2AA;
+        nav {
+            background-color: #20B2AA;
             box-shadow: 0 0 10px 1px #DCDCDC;
-            display:flex;
-            flex-direction:row-reverse;
-            padding-right:50px;
+            display: flex;
+            flex-direction: row-reverse;
+            padding-right: 50px;
         }
 
-        ul{
-            display:flex;
-            flex-direction:row;
-            gap:20px;
+        ul {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
         }
 
-        .a{
-            text-decoration:none;
-            color:white;
+        .a {
+            text-decoration: none;
+            color: white;
         }
 
-        .a:hover{
-            color:black;
+        .a:hover {
+            color: black;
         }
 
-        h1, p{
-            text-align:center;
+        h1,
+        p {
+            text-align: center;
         }
 
-        #container{
-            display : flex;
-            gap:20px;
+        #container {
+            display: flex;
+            gap: 20px;
         }
 
-        #box{
-            width:150px;
-            text-align:center;
+        #box {
+            width: 150px;
+            text-align: center;
         }
     </style>
-        <main class="main">
-            <?php
-                class NavConnect {
-                    public function NavConnect(){
-                        echo "<nav>";
-                        echo "<ul>";
-                        echo "<a class='a' href='../pages/welcome.php'>Home</a>";
-                        echo "<form action='' method='post'>";
-                        echo "<input type='submit' name='logout' value='Se déconnecter'>";
-                        echo "</form>";
-                        echo "</ul>";
-                        echo "</nav>";
-                    }
-                }
-            ?>
+    <main class="main">
+        <?php
+        class NavConnect
+        {
+            public function NavConnect()
+            {
+                echo "<nav>";
+                echo "<ul>";
+                echo "<a class='a' href='../pages/welcome.php'>Home</a>";
+                echo "<form action='' method='post'>";
+                echo "<input type='submit' name='logout' value='Se déconnecter'>";
+                echo "</form>";
+                echo "</ul>";
+                echo "</nav>";
+            }
+        }
+        ?>
     </main>
 </body>
+
 </html>

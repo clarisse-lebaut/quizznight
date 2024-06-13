@@ -22,22 +22,26 @@ $newQuiz->createNewQuizz($connexion); // Appel de la méthode pour créer un nou
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page de Bienvenue</title>
+    <title>Bienvenue !</title>
 </head>
+
 <body>
     <style>
         body {
             font-family: arial, sans-serif;
         }
+
         h2 {
             text-align: center;
         }
+
         #card_quizz {
             background-color: #F8F8FF;
-            box-shadow: #DCDCDC 0 0 5px 1px; 
+            box-shadow: #DCDCDC 0 0 5px 1px;
             display: flex;
             gap: 30px;
             align-items: center;
@@ -49,22 +53,49 @@ $newQuiz->createNewQuizz($connexion); // Appel de la méthode pour créer un nou
             border-radius: 10px;
             font-size: 20px;
         }
+
         #card_quizz:active {
             transform: translateY(10px);
         }
-        #details{
-            display:flex;
-            flex-direction:column;
-            gap:20px;
-            width:250px;
-            margin:auto;
-            margin-top:20px;
-            margin-bottom:20px;
+
+        #details {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 250px;
+            margin: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
 
+        .all_quizz {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 50px 20px 50px;
+        }
+
+        .cards {
+            border-radius: 10px;
+            border: #DCDCDC solid 1px;
+            box-shadow: #DCDCDC 0 0 10px 1px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        #box_title {
+            background-color: blue;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
     </style>
     <?php
-        $navBar->NavConnect();
+    $navBar->NavConnect();
     ?>
     <h2>Bienvenue, <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
     <p>Crée un quizz</p>
@@ -83,32 +114,6 @@ $newQuiz->createNewQuizz($connexion); // Appel de la méthode pour créer un nou
     <p>Vos quizz</p>
     <hr width="500px">
     <div class="all_quizz">
-        <style>
-            .all_quizz{
-                display:grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                gap: 20px;
-                justify-content:center;
-                align-items:center;
-                margin: 40px 50px 20px 50px;
-            }
-            .cards{
-                border-radius:10px;
-                border: #DCDCDC solid 1px;
-                box-shadow: #DCDCDC 0 0 10px 1px;
-                display:flex;
-                flex-direction:column;
-                align-items:center;
-                padding:10px;
-            }
-            #box_title{
-                background-color:blue;
-                width: 100%;
-                height:100%;
-                border-radius:5px;
-            }
-        </style>
-
         <?php
         $user_id = $_SESSION['user_id']; // Récupérer l'ID de l'utilisateur depuis la session
         // Préparer la requête SQL pour récupérer tous les quizz créés par l'utilisateur
@@ -131,7 +136,6 @@ $newQuiz->createNewQuizz($connexion); // Appel de la méthode pour créer un nou
                 echo "<button name='download' type='submit'>Telécharger</button>";
                 echo "</div>";
                 echo "</form>";
-                // Vous pouvez ajouter plus d'informations ou de mises en forme selon vos besoins
             }
         } else {
             echo "<p>Aucun quizz trouvé.</p>";
@@ -139,4 +143,5 @@ $newQuiz->createNewQuizz($connexion); // Appel de la méthode pour créer un nou
         ?>
     </div>
 </body>
+
 </html>
