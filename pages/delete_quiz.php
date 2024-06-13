@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nightquiz";
+$dbname = "quiznight";
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

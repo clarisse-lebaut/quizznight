@@ -3,7 +3,7 @@
 session_start();
 
 // Method to connect appli to DataBase
-require './class/classConnectDB.php';
+require '../class/classConnectDB.php';
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
 
@@ -19,24 +19,22 @@ function isLoggedIn()
 
 <head>
     <title>Quiz Night</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="./styles/nav.css">
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="stylesheet" href="../styles/nav.css">
 </head>
 
 <body>
     <header>
         <nav class="navbar">
             <ul>
-                <li><a class="a_style" href="index.php">Accueil</a></li>
+                <li><a class="a_style" href="../../index.php">Accueil</a></li>
                 <?php if (isLoggedIn() && $_SESSION["roles"] == "admin"): ?>
-                    <li><a class="a_style" href="admin.php">Administration</a></li>
-                    <li><a class="a_style" href="create_quiz.php">Créer un quiz</a></li>
-                    <li><a class="a_style" href="./pages/disconnect.php">Déconnexion</a></li>
+                    <li><a class="a_style" href="admin.php">Gestion</a></li>
+                    <li><a class="a_style" href="./create_pages/create_quiz.php">Créer un quiz</a></li>
+                    <li><a class="a_style" href="./add_pages/add_answers.php">Ajouter des réponses</a></li>
+                    <li><a class="a_style" href="./add_pages/add_questions.php">Ajouter des questions</a></li>
+                    <li><a class="a_style" href="./disconnect.php">Déconnexion</a></li>
                 <?php endif; ?>
-                <li><a class="a_style" href="./pages/create_pages/create_user.php">Créer un compte</a></li>
-                <li><a class="a_style" href="./pages/login.php">Connexion</a></li>
-                <li><a class="a_style" href="./pages/add_pages/add_answers.php">Ajouter des réponses</a></li>
-                <li><a class="a_style" href="./pages/add_pages/add_questions.php">Ajouter des questions</a></li>
             </ul>
         </nav>
     </header>

@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
-    header("Location: index.php");
+    header("Location: ../welcome.php");
     exit();
 }
 
@@ -10,7 +10,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nightquiz";
+$dbname = "quiznight";
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -47,19 +47,30 @@ try {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Add Answers</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<header>        <li><a href="index.php">retour à l'index</a></li>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="../welcome.php">Retour à l'index</a></li>
+            <li><a href="../admin.php">Administration</a></li>
+        </ul>
+    </nav>
 </header>
+
 <body>
     <h1>Add Answers to Question</h1>
     <form method="post" action="add_answers.php">
         <label for="question_id">Select Question:</label>
         <select name="question_id" id="question_id" required>
             <?php foreach ($questions as $question): ?>
-                <option value="<?php echo htmlspecialchars($question['id']); ?>"><?php echo htmlspecialchars($question['question_text']); ?></option>
+                <option value="<?php echo htmlspecialchars($question['id']); ?>">
+                    <?php echo htmlspecialchars($question['question_text']); ?>
+                </option>
             <?php endforeach; ?>
         </select><br><br>
         <label for="answer_text">Answer:</label>
@@ -74,4 +85,5 @@ try {
         <?php endforeach; ?>
     </ul>
 </body>
+
 </html>

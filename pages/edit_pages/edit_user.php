@@ -2,14 +2,14 @@
 session_start();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
-    header("Location: index.php");
+    header("Location: ../../welcome.php");
     exit();
 }
 
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nightquiz";
+$dbname = "quiznight";
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -24,7 +24,7 @@ try {
             $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
             $stmt->execute();
             echo "User deleted successfully!";
-            header("Location: admin.php"); // Redirect back to admin page after deletion
+            header("Location: ../admin.php"); // Redirect back to admin page after deletion
             exit();
         } else {
             // Handle update user
@@ -42,7 +42,7 @@ try {
             $stmt->execute();
 
             echo "User updated successfully!";
-            
+
             // Re-fetch the updated user to display in the form
             $sql = "SELECT id, username, email, roles FROM user WHERE id = :id";
             $stmt = $conn->prepare($sql);
@@ -66,25 +66,41 @@ try {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Edit User</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="">
 </head>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="../welcome.php">Retour à l'index</a></li>
+            <li><a href="../admin.php">Administration</a></li>
+        </ul>
+    </nav>
+</header>
+
 <body>
     <h1>Edit User</h1>
     <form method="post" action="edit_user.php">
         <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required><br><br>
+        <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>"
+            required><br><br>
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required><br><br>
+        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>"
+            required><br><br>
         <label for="roles">Roles:</label>
-        <input type="text" id="roles" name="roles" value="<?php echo htmlspecialchars($user['roles']); ?>" required><br><br>
+        <input type="text" id="roles" name="roles" value="<?php echo htmlspecialchars($user['roles']); ?>"
+            required><br><br>
         <input type="submit" value="Update User">
     </form>
     <form method="post" action="edit_user.php" style="margin-top: 20px;">
         <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
-        <input type="submit" name="delete" value="Delete User" onclick="return confirm('Are you sure you want to delete this user?');">
+        <input type="submit" name="delete" value="Delete User"
+            onclick="return confirm('Are you sure you want to delete this user?');">
     </form>
 </body>
+
 </html>

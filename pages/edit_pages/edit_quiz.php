@@ -2,14 +2,14 @@
 session_start();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
-    header("Location: index.php");
+    header("Location: ../../welcome.php");
     exit();
 }
 
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nightquiz";
+$dbname = "quiznight";
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -25,7 +25,7 @@ try {
             $stmt->bindParam(':id', $quiz_id, PDO::PARAM_INT);
             $stmt->execute();
             echo "Quiz deleted successfully!";
-            header("Location: admin.php"); // Redirect back to admin page after deletion
+            header("Location: ../admin.php"); // Redirect back to admin page after deletion
             exit();
         } else {
             // Handle update quiz
@@ -40,7 +40,7 @@ try {
             $stmt->bindParam(':id', $quiz_id, PDO::PARAM_INT);
             $stmt->execute();
             echo "Quiz updated successfully!";
-            
+
             // Re-fetch the updated quiz to display in the form
             $sql = "SELECT id, title, description FROM quiz WHERE id = :id";
             $stmt = $conn->prepare($sql);
@@ -74,30 +74,40 @@ try {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Edit Quiz</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
-<header> <nav>
-        <ul><li><a href="index.php">Retour à l'index</a></li>
-        <li><a href="admin.php">Administration</a></li></header>
-</ul></nav>
+<header>
+    <nav>
+        <ul>
+            <li><a href="../welcome.php">Retour à l'index</a></li>
+            <li><a href="../admin.php">Administration</a></li>
+        </ul>
+    </nav>
+</header>
+
 <body>
     <h1>Edit Quiz</h1>
-    <?php if (isset($quiz)) : ?>
+    <?php if (isset($quiz)): ?>
         <form method="post" action="edit_quiz.php">
             <input type="hidden" name="quiz_id" value="<?php echo htmlspecialchars($quiz['id']); ?>">
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($quiz['title']); ?>" required><br><br>
+            <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($quiz['title']); ?>"
+                required><br><br>
             <label for="description">Description:</label>
-            <textarea id="description" name="description"><?php echo htmlspecialchars($quiz['description']); ?></textarea><br><br>
+            <textarea id="description"
+                name="description"><?php echo htmlspecialchars($quiz['description']); ?></textarea><br><br>
             <input type="submit" value="Update Quiz">
         </form>
         <form method="post" action="edit_quiz.php" style="margin-top: 20px;">
             <input type="hidden" name="quiz_id" value="<?php echo htmlspecialchars($quiz['id']); ?>">
-            <input type="submit" name="delete" value="Delete Quiz" onclick="return confirm('Are you sure you want to delete this quiz?');">
+            <input type="submit" name="delete" value="Delete Quiz"
+                onclick="return confirm('Are you sure you want to delete this quiz?');">
         </form>
     <?php endif; ?>
 </body>
+
 </html>

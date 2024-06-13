@@ -1,0 +1,21 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: darkcyan;
+  box-shadow: 0 0 5px 1px gray;
+}
+
+li {
+  display: inline;
+  list-style: none;
+  margin: 20px;
+}
+
+.a_style {
+  color: white;
+  text-decoration: none;
+}
+
+.a_style:hover {
+  color: blue;
+}

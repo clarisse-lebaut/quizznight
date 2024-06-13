@@ -1,22 +1,14 @@
 <?php
 session_start();
 
+// Method to connect appli to DataBase
+require '../../class/classConnectDB.php';
+$dbConnection = new ConnectToDatabase();
+$connexion = $dbConnection->getConnexion();
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
-}
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "nightquiz";
-
-try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-    die();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

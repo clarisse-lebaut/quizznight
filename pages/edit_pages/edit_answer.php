@@ -2,14 +2,14 @@
 session_start();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
-    header("Location: index.php");
+    header("Location: ../welcome.php");
     exit();
 }
 
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nightquiz";
+$dbname = "quiznight";
 
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -24,7 +24,7 @@ try {
             $stmt->bindParam(':id', $answer_id, PDO::PARAM_INT);
             $stmt->execute();
             echo "Answer deleted successfully!";
-            header("Location: admin.php"); // Redirect back to admin page after deletion
+            header("Location: ../admin.php"); // Redirect back to admin page after deletion
             exit();
         } else {
             // Handle update answer
@@ -38,7 +38,7 @@ try {
             $stmt->execute();
 
             echo "Answer updated successfully!";
-            
+
             // Re-fetch the updated answer to display in the form
             $sql = "SELECT id, answer_text FROM answer WHERE id = :id";
             $stmt = $conn->prepare($sql);
@@ -62,25 +62,35 @@ try {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Edit Answer</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-   
-<header> <nav>
-        <ul><li><a href="index.php">Retour à l'index</a></li><li><a href="admin.php">Administration</a></li></header>
-</ul></nav>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="../welcome.php">Retour à l'index</a></li>
+            <li><a href="../admin.php">Administration</a></li>
+        </ul>
+    </nav>
+</header>
+
 <body>
     <h1>Edit Answer</h1>
     <form method="post" action="edit_answer.php">
         <input type="hidden" name="answer_id" value="<?php echo htmlspecialchars($answer['id']); ?>">
         <label for="answer_text">Answer:</label>
-        <input type="text" id="answer_text" name="answer_text" value="<?php echo htmlspecialchars($answer['answer_text']); ?>" required><br><br>
+        <input type="text" id="answer_text" name="answer_text"
+            value="<?php echo htmlspecialchars($answer['answer_text']); ?>" required><br><br>
         <input type="submit" value="Update Answer">
     </form>
     <form method="post" action="delete_answer.php" style="margin-top: 20px;">
         <input type="hidden" name="answer_id" value="<?php echo htmlspecialchars($answer['id']); ?>">
-        <input type="submit" name="delete" value="Delete Answer" onclick="return confirm('Are you sure you want to delete this answer?');">
+        <input type="submit" name="delete" value="Delete Answer"
+            onclick="return confirm('Are you sure you want to delete this answer?');">
     </form>
 </body>
+
 </html>
