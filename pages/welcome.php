@@ -10,12 +10,6 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-if ($_POST){
-    $consult = $_POST['consult'];
-    header("Location: quizz.php");
-    exit();
-}
-
 // Les instances
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
@@ -93,11 +87,10 @@ $newQuiz->createNewQuizz($connexion); // Appel de la méthode pour créer un nou
             .all_quizz{
                 display:grid;
                 grid-template-columns: 1fr 1fr 1fr;
-                grid-template-rows: 1fr 1fr 1fr;
                 gap: 20px;
                 justify-content:center;
                 align-items:center;
-                margin: 40px 50px 0 50px;
+                margin: 40px 50px 20px 50px;
             }
             .cards{
                 border-radius:10px;
@@ -108,7 +101,14 @@ $newQuiz->createNewQuizz($connexion); // Appel de la méthode pour créer un nou
                 align-items:center;
                 padding:10px;
             }
+            #box_title{
+                background-color:blue;
+                width: 100%;
+                height:100%;
+                border-radius:5px;
+            }
         </style>
+
         <?php
         $user_id = $_SESSION['user_id']; // Récupérer l'ID de l'utilisateur depuis la session
         // Préparer la requête SQL pour récupérer tous les quizz créés par l'utilisateur
@@ -125,10 +125,10 @@ $newQuiz->createNewQuizz($connexion); // Appel de la méthode pour créer un nou
             foreach ($quizzes as $quiz) {
                 echo "<form method='POST'>";
                 echo "<div class='cards'>";
-                echo "<p>Titre : " . htmlspecialchars($quiz['title']) . "</p>";
-                echo "<p>Description : " . htmlspecialchars($quiz['description']) . "</p>";
-                echo "<button name='consult' type='submit'>Consulter</button><br>";
-                echo "<button type='submit'>Telécharger</button>";
+                echo "<div id='box_title'><p>" . htmlspecialchars($quiz['title']) . "</p></div>";
+                echo "<p id='box_plot'>" . htmlspecialchars($quiz['description']) . "</p>";
+                echo "<a class='a-style' href='./quizz.php'>Consulter</a><br>";
+                echo "<button name='download' type='submit'>Telécharger</button>";
                 echo "</div>";
                 echo "</form>";
                 // Vous pouvez ajouter plus d'informations ou de mises en forme selon vos besoins

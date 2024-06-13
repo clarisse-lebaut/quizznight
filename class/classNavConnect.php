@@ -32,12 +32,12 @@
             gap:20px;
         }
 
-        a{
+        .a{
             text-decoration:none;
             color:white;
         }
 
-        a:hover{
+        .a:hover{
             color:black;
         }
 
@@ -61,7 +61,7 @@
                     public function NavConnect(){
                         echo "<nav>";
                         echo "<ul>";
-                        echo "<a href='../pages/welcome.php'>Home</a>";
+                        echo "<a class='a' href='../pages/welcome.php'>Home</a>";
                         echo "<form action='' method='post'>";
                         echo "<input type='submit' name='logout' value='Se déconnecter'>";
                         echo "</form>";
