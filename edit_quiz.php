@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
+    header("Location: index.php");
+    exit();
+}
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -9,45 +14,60 @@ $dbname = "nightquiz";
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch(PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-    exit();
-}
+    echo "Connected successfully";
 
-if (!isset($_SESSION["user_id"]) || $_SESSION["role"] != "admin") {
-    header("Location: index.php");
-    exit();
-}
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST["delete"])) {
+            // Handle delete quiz
+            $quiz_id = $_POST["quiz_id"];
+            $sql = "DELETE FROM quiz WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $quiz_id, PDO::PARAM_INT);
+            $stmt->execute();
+            echo "Quiz deleted successfully!";
+            header("Location: admin.php"); // Redirect back to admin page after deletion
+            exit();
+        } else {
+            // Handle update quiz
+            $quiz_id = $_POST["quiz_id"];
+            $title = $_POST["title"];
+            $description = $_POST["description"];
 
-$quiz_id = $_GET["id"];
+            $sql = "UPDATE quiz SET title = :title, description = :description WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':title', $title, PDO::PARAM_STR);
+            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $quiz_id, PDO::PARAM_INT);
+            $stmt->execute();
+            echo "Quiz updated successfully!";
+            
+            // Re-fetch the updated quiz to display in the form
+            $sql = "SELECT id, title, description FROM quiz WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $quiz_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $quiz = $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    } else {
+        if (isset($_GET["id"])) {
+            $quiz_id = $_GET["id"];
+            $sql = "SELECT id, title, description FROM quiz WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $quiz_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $quiz = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Récupérer les informations du quiz depuis la base de données
-$sql = "SELECT title, description FROM quizzes WHERE id = :quiz_id AND created_by = :user_id";
-$stmt = $conn->prepare($sql);
-$stmt->bindParam(':quiz_id', $quiz_id);
-$stmt->bindParam(':user_id', $_SESSION["user_id"]);
-$stmt->execute();
-$result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$result) {
-    header("Location: admin.php");
-    exit();
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $title = $_POST["title"];
-    $description = $_POST["description"];
-
-    // Mettre à jour le quiz dans la base de données
-    $sql = "UPDATE quizzes SET title = :title, description = :description WHERE id = :quiz_id AND created_by = :user_id";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':title', $title);
-    $stmt->bindParam(':description', $description);
-    $stmt->bindParam(':quiz_id', $quiz_id);
-    $stmt->bindParam(':user_id', $_SESSION["user_id"]);
-    $stmt->execute();
-
-    header("Location: admin.php");
+            if (!$quiz) {
+                echo "Quiz not found.";
+                exit();
+            }
+        } else {
+            echo "No quiz ID provided.";
+            exit();
+        }
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
     exit();
 }
 ?>
@@ -58,14 +78,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Edit Quiz</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
+<header> <nav>
+        <ul><li><a href="index.php">Retour à l'index</a></li>
+        <li><a href="admin.php">Administration</a></li></header>
+</ul></nav>
 <body>
     <h1>Edit Quiz</h1>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id=" . $quiz_id); ?>">
-        <label for="title">Title:</label>
-        <input type="text" id="title" name="title" value="<?php echo $result["title"]; ?>" required><br><br>
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required><?php echo $result["description"]; ?></textarea><br><br>
-        <input type="submit" value="Update Quiz">
-    </form>
+    <?php if (isset($quiz)) : ?>
+        <form method="post" action="edit_quiz.php">
+            <input type="hidden" name="quiz_id" value="<?php echo htmlspecialchars($quiz['id']); ?>">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($quiz['title']); ?>" required><br><br>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"><?php echo htmlspecialchars($quiz['description']); ?></textarea><br><br>
+            <input type="submit" value="Update Quiz">
+        </form>
+        <form method="post" action="edit_quiz.php" style="margin-top: 20px;">
+            <input type="hidden" name="quiz_id" value="<?php echo htmlspecialchars($quiz['id']); ?>">
+            <input type="submit" name="delete" value="Delete Quiz" onclick="return confirm('Are you sure you want to delete this quiz?');">
+        </form>
+    <?php endif; ?>
 </body>
 </html>
