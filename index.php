@@ -31,7 +31,7 @@ function isLoggedIn()
                 <?php if (isLoggedIn() && $_SESSION["roles"] == "admin"): ?>
                     <li><a class="a_style" href="admin.php">Administration</a></li>
                     <li><a class="a_style" href="create_quiz.php">Créer un quiz</a></li>
-                    <li><a class="a_style" href="./pages/disconnect.php">Déconnexion</a></li>
+                    <li><a class="a_style" href="./config/disconnect.php">Déconnexion</a></li>
                 <?php endif; ?>
                 <li><a class="a_style" href="./pages/create_pages/create_user.php">Créer un compte</a></li>
                 <li><a class="a_style" href="./pages/login.php">Connexion</a></li>

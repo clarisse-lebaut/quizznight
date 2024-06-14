@@ -1,23 +1,19 @@
 <?php
-session_start();
+require '../config.php'; // Inclure la classe de connexion à la base de données
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
-    header("Location: index.php");
+    header("Location: ./index.php");
     exit();
 }
 
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "quiznight";
+require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $dbConnection = new ConnectToDatabase();
+    $conn = $dbConnection->getConnexion();
 
     if (!isset($_GET["id"])) {
-        header("Location: admin.php");
+        header("Location: ./admin.php");
         exit();
     }
 
@@ -32,7 +28,7 @@ try {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$result) {
-        header("Location: admin.php");
+        header("Location: ./admin.php");
         exit();
     }
 
@@ -43,7 +39,7 @@ try {
     $stmt->bindParam(':user_id', $_SESSION["user_id"], PDO::PARAM_INT);
     $stmt->execute();
 
-    header("Location: admin.php");
+    header("Location: ./admin.php");
     exit();
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();

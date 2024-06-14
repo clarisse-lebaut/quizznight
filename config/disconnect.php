@@ -1,5 +1,6 @@
 <?php
-session_start();
+// Inclure le fichier de configuration
+require './config.php';
 
 // Détruire toutes les variables de session
 $_SESSION = array();

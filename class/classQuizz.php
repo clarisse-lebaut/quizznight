@@ -1,5 +1,5 @@
 <?php
-require '../../config/config.php'; // Inclure le fichier de configuration
+require '../config/config.php'; // Inclure le fichier de configuration
 
 class Quiz
 {
@@ -21,7 +21,7 @@ class Quiz
                 $stmt->bindParam(':creator_id', $creator_id);
                 $stmt->execute();
 
-                header('Location: ../welcome.php');
+                header('Location: ../pages/welcome.php');
                 exit();
             } catch (PDOException $e) {
                 echo "Erreur: " . $e->getMessage();

@@ -1,6 +1,6 @@
 <?php
 require 'classConnectDB.php'; // Inclure la classe de connexion à la base de données
-require '../../config/config.php'; // Inclure le fichier de configuration
+require '../config/config.php'; // Inclure le fichier de configuration
 
 class User
 {
@@ -30,7 +30,7 @@ class User
                 $stmt->bindParam(':roles', $role);
                 $stmt->execute();
 
-                header("Location: ../login.php");
+                header("Location: ../pages/login.php");
                 exit();
             } catch (PDOException $e) {
                 echo "Erreur: " . $e->getMessage();

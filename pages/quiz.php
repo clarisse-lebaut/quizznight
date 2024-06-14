@@ -1,19 +1,21 @@
 <?php
-session_start();
-
+// Inclure le fichier de configuration
+require '../config/config.php';
 // Method to connect appli to DataBase
 require '../class/classConnectDB.php';
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
+require '../class/classNavBar.php';
+$navBar = new NavConnect();
 
 // Vérification des autorisations d'accès
 if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "admin") {
-    header("Location: index.php");
+    header("Location: ./index.php");
     exit();
 }
 
 if (!isset($_SESSION["user_id"])) {
-    header("Location: login.php");
+    header("Location: ./login.php");
     exit();
 }
 
@@ -60,15 +62,10 @@ $stmt_questions->execute();
 
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="index.php">Accueil</a></li>
-                <li><a href="admin.php">Administration</a></li>
-                <li><a href="create_user.php">Créer un utilisateur</a></li>
-                <li><a href="add_answers.php">Ajouter des réponses</a></li>
-                <li><a href="add_questions.php">Ajouter des questions</a></li>
-                <li><a href="?logout=true">Déconnexion</a></li>
-            </ul>
+        <nav class="navbar">
+            <?php
+            $navBar->NavConnect();
+            ?>
         </nav>
     </header>
 

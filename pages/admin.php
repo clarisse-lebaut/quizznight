@@ -1,5 +1,6 @@
 <?php
-session_start();
+// Inclure le fichier de configuration
+require '../config/config.php';
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
     header("Location: index.php");
@@ -70,7 +71,7 @@ $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo htmlspecialchars($user['username']); ?></td>
                             <td><?php echo htmlspecialchars($user['email']); ?></td>
                             <td><?php echo htmlspecialchars($user['roles']); ?></td>
-                            <td><a href="./edit_pages/edit_user.php?id=<?php echo htmlspecialchars($user['id']); ?>">Edit</a></td>
+                            <td><a href="./edit_user.php?id=<?php echo htmlspecialchars($user['id']); ?>">Edit</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
@@ -90,7 +91,7 @@ $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo htmlspecialchars($quiz['title']); ?></td>
                             <td><?php echo htmlspecialchars($quiz['description']); ?></td>
                             <td><?php echo htmlspecialchars($quiz['creator_id']); ?></td>
-                            <td><a href="./edit_pages/edit_quiz.php?id=<?php echo htmlspecialchars($quiz['id']); ?>">Edit</a></td>
+                            <td><a href="./edit_quiz.php?id=<?php echo htmlspecialchars($quiz['id']); ?>">Edit</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
@@ -109,7 +110,7 @@ $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
                         <tr>
                             <td><?php echo htmlspecialchars($question['question_text']); ?></td>
                             <td><?php echo htmlspecialchars($question['quiz_title']); ?></td>
-                            <td><a href="./edit_pages/edit_question.php?id=<?php echo htmlspecialchars($question['id']); ?>">Edit</a>
+                            <td><a href="./edit_question.php?id=<?php echo htmlspecialchars($question['id']); ?>">Edit</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -131,7 +132,7 @@ $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo htmlspecialchars($answer['answer_text']); ?></td>
                             <td><?php echo htmlspecialchars($answer['question_text']); ?></td>
                             <td><?php echo htmlspecialchars($answer['quiz_title']); ?></td>
-                            <td><a href="./edit_pages/edit_answer.php?id=<?php echo htmlspecialchars($answer['id']); ?>">Edit</a></td>
+                            <td><a href="./edit_answer.php?id=<?php echo htmlspecialchars($answer['id']); ?>">Edit</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>

@@ -2,6 +2,8 @@
 require '../config/config.php'; // Inclure le fichier de configuration
 require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
 require '../class/classQuestion.php'; // Inclure la classe pour l'ajout de questions
+require '../class/classNavBar.php';
+$navBar = new NavConnect();
 
 try {
     // Initialiser la connexion à la base de données
@@ -30,15 +32,14 @@ try {
 
 <head>
     <title>Add Questions</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles/body.css">
 </head>
 
 <header>
-    <nav>
-        <ul>
-            <li><a href="../pages/welcome.php">Retour à l'index</a></li>
-            <li><a href="../pages/admin.php">Administration</a></li>
-        </ul>
+    <nav class="navbar">
+        <?php
+        $navBar->NavConnect();
+        ?>
     </nav>
 </header>
 

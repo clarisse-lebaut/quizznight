@@ -1,6 +1,8 @@
 <?php
 require '../config/config.php'; // Inclure le fichier de configuration
 require '../class/classConnectDB.php';
+require '../class/classNavBar.php';
+$navBar = new NavConnect();
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
 
@@ -21,19 +23,14 @@ function isLoggedIn()
 <body>
     <header>
         <nav class="navbar">
-            <ul>
-                <li><a class="a_style" href="./welcome.php">Accueil</a></li>
-                <li><a class="a_style" href="./create_pages/create_quiz.php">Créer un quiz</a></li>
-                <li><a class="a_style" href="../add_pages/add_answers.php">Ajouter des réponses</a></li>
-                <li><a class="a_style" href="../add_pages/add_questions.php">Ajouter des questions</a></li>
-                <li><a class="a_style" href="./admin.php">Gestion</a></li>
-                <li><a class="a_style" href="./disconnect.php">Déconnexion</a></li>
-            </ul>
+            <?php
+            $navBar->NavConnect();
+            ?>
         </nav>
     </header>
     <main>
         <h1>Quiz Night</h1>
-        <p class="title">Bienvenue sur Quiz Night !</p>
+        <p class="title">Bienvenue sur Quiz Night <?php echo htmlspecialchars($_SESSION['username']); ?> !</p>
         <p class="title">Choisissez un quiz :</p>
         <hr width="250px">
         <div class="grid_container">

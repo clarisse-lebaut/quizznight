@@ -1,8 +1,9 @@
 <?php
-require '../../config/config.php'; // Inclure le fichier de configuration
-require '../../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
-require '../../class/classQuizz.php'; // Inclure la classe Quiz
-
+require '../config/config.php'; // Inclure le fichier de configuration
+require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
+require '../class/classQuizz.php'; // Inclure la classe Quiz
+require '../class/classNavBar.php';
+$navBar = new NavConnect();
 $dbConnection = new ConnectToDatabase();
 $quiz = new Quiz($dbConnection);
 
@@ -25,20 +26,15 @@ if ($_POST) {
 
 <head>
     <title>Créer un quiz</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles/body.css">
 </head>
 
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="index.php">Accueil</a></li>
-                <li><a href="admin.php">Administration</a></li>
-                <li><a href="create_user.php">Créer un utilisateur</a></li>
-                <li><a href="login.php">Connexion</a></li>
-                <li><a href="add_answers.php">Ajouter des réponses</a></li>
-                <li><a href="add_questions.php">Ajouter des questions</a></li>
-            </ul>
+        <nav class="navbar">
+            <?php
+            $navBar->NavConnect();
+            ?>
         </nav>
     </header>
 

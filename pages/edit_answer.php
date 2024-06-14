@@ -1,8 +1,10 @@
 <?php
+require '../class/classNavBar.php';
+$navBar = new NavConnect();
 session_start();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
-    header("Location: ../welcome.php");
+    header("Location: ./welcome.php");
     exit();
 }
 
@@ -24,7 +26,7 @@ try {
             $stmt->bindParam(':id', $answer_id, PDO::PARAM_INT);
             $stmt->execute();
             echo "Answer deleted successfully!";
-            header("Location: ../admin.php"); // Redirect back to admin page after deletion
+            header("Location: ./admin.php"); // Redirect back to admin page after deletion
             exit();
         } else {
             // Handle update answer
@@ -65,20 +67,21 @@ try {
 
 <head>
     <title>Edit Answer</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles/nav.css">
+    <link rel="stylesheet" href="../styles/body.css">
 </head>
 
 <header>
-    <nav>
-        <ul>
-            <li><a href="../welcome.php">Retour à l'index</a></li>
-            <li><a href="../admin.php">Administration</a></li>
-        </ul>
+    <nav class="navbar">
+        <?php
+        $navBar->NavConnect();
+        ?>
     </nav>
 </header>
 
 <body>
     <h1>Edit Answer</h1>
+    <a href="./admin.php">Retour sur la page adminstrateur</a>
     <form method="post" action="edit_answer.php">
         <input type="hidden" name="answer_id" value="<?php echo htmlspecialchars($answer['id']); ?>">
         <label for="answer_text">Answer:</label>

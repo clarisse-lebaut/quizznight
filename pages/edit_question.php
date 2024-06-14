@@ -1,8 +1,10 @@
 <?php
+require '../class/classNavBar.php';
+$navBar = new NavConnect();
 session_start();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
-    header("Location: ../../welcome.php");
+    header("Location: ./welcome.php");
     exit();
 }
 
@@ -52,21 +54,22 @@ try {
 
 <head>
     <title>Edit Question</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles/nav.css">
+    <link rel="stylesheet" href="../styles/body.css">
 </head>
 
 <header>
-    <nav>
-        <ul>
-            <li><a href="../welcome.php">Retour à l'index</a></li>
-            <li><a href="../admin.php">Administration</a></li>
-        </ul>
+    <nav class="navbar">
+        <?php
+        $navBar->NavConnect();
+        ?>
     </nav>
 </header>
 
 
 <body>
     <h1>Edit Question</h1>
+    <a href="./admin.php">Retour sur la page adminstrateur</a>
     <form method="post" action="edit_question.php">
         <input type="hidden" name="question_id" value="<?php echo htmlspecialchars($question['id']); ?>">
         <label for="question_text">Question:</label>

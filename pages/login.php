@@ -1,7 +1,6 @@
 <?php
-// login.php
-session_start();
-
+// Inclure le fichier de configuration
+require '../config/config.php';
 // Method to connect appli to DataBase
 require '../class/classConnectDB.php';
 $dbConnection = new ConnectToDatabase();
