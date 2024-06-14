@@ -1,8 +1,8 @@
 <?php
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
-
-session_start();
+// Inclure le fichier de configuration
+require '../config/config.php';
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
     header("Location: ./welcome.php");
@@ -86,7 +86,9 @@ try {
 
 <body>
     <h1>Edit User</h1>
+
     <a href="./admin.php">Retour sur la page adminstrateur</a>
+
     <form method="post" action="edit_user.php">
         <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
         <label for="username">Username:</label>
@@ -100,11 +102,13 @@ try {
             required><br><br>
         <input type="submit" value="Update User">
     </form>
+
     <form method="post" action="edit_user.php" style="margin-top: 20px;">
         <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
         <input type="submit" name="delete" value="Delete User"
             onclick="return confirm('Are you sure you want to delete this user?');">
     </form>
+
 </body>
 
 </html>

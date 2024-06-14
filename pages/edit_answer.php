@@ -1,7 +1,8 @@
 <?php
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
-session_start();
+// Inclure le fichier de configuration
+require '../config/config.php';
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
     header("Location: ./welcome.php");
@@ -26,7 +27,7 @@ try {
             $stmt->bindParam(':id', $answer_id, PDO::PARAM_INT);
             $stmt->execute();
             echo "Answer deleted successfully!";
-            header("Location: ./admin.php"); // Redirect back to admin page after deletion
+            header("Location: admin.php"); // Redirect back to admin page after deletion
             exit();
         } else {
             // Handle update answer
@@ -81,7 +82,9 @@ try {
 
 <body>
     <h1>Edit Answer</h1>
+
     <a href="./admin.php">Retour sur la page adminstrateur</a>
+
     <form method="post" action="edit_answer.php">
         <input type="hidden" name="answer_id" value="<?php echo htmlspecialchars($answer['id']); ?>">
         <label for="answer_text">Answer:</label>
@@ -89,11 +92,13 @@ try {
             value="<?php echo htmlspecialchars($answer['answer_text']); ?>" required><br><br>
         <input type="submit" value="Update Answer">
     </form>
-    <form method="post" action="delete_answer.php" style="margin-top: 20px;">
+
+    <form method="post" action="" style="margin-top: 20px;">
         <input type="hidden" name="answer_id" value="<?php echo htmlspecialchars($answer['id']); ?>">
         <input type="submit" name="delete" value="Delete Answer"
             onclick="return confirm('Are you sure you want to delete this answer?');">
     </form>
+
 </body>
 
 </html>

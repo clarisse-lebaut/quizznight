@@ -1,6 +1,6 @@
 <?php
-// Start the session
-session_start();
+// Inclure le fichier de configuration
+require './config/config.php';
 
 // Method to connect appli to DataBase
 require './class/classConnectDB.php';
@@ -33,7 +33,7 @@ function isLoggedIn()
                     <li><a class="a_style" href="create_quiz.php">Créer un quiz</a></li>
                     <li><a class="a_style" href="./config/disconnect.php">Déconnexion</a></li>
                 <?php endif; ?>
-                <li><a class="a_style" href="./pages/create_pages/create_user.php">Créer un compte</a></li>
+                <li><a class="a_style" href="./pages/create_user.php">Créer un compte</a></li>
                 <li><a class="a_style" href="./pages/login.php">Connexion</a></li>
             </ul>
         </nav>

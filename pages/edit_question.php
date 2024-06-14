@@ -1,7 +1,8 @@
 <?php
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
-session_start();
+// Inclure le fichier de configuration
+require '../config/config.php';
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
     header("Location: ./welcome.php");
@@ -18,23 +19,42 @@ try {
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $question_id = $_POST["question_id"];
-        $question_text = $_POST["question_text"];
+        if (isset($_POST["delete"])) {
+            // Handle delete question
+            $question_id = $_POST["question_id"];
+            $sql = "DELETE FROM question WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $question_id, PDO::PARAM_INT);
+            $stmt->execute();
 
-        $sql = "UPDATE question SET question_text = :question_text WHERE id = :id";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':question_text', $question_text, PDO::PARAM_STR);
-        $stmt->bindParam(':id', $question_id, PDO::PARAM_INT);
-        $stmt->execute();
+            // Optionally, remove the question from the session if stored there
+            if (isset($_SESSION['questions'][$question_id])) {
+                unset($_SESSION['questions'][$question_id]);
+            }
 
-        echo "Question updated successfully!";
+            echo "Question deleted successfully!";
+            header("Location: ./admin.php"); // Redirect back to admin page after deletion
+            exit();
+        } else {
+            // Handle update question
+            $question_id = $_POST["question_id"];
+            $question_text = $_POST["question_text"];
 
-        // Re-fetch the updated question to display in the form
-        $sql = "SELECT id, question_text FROM question WHERE id = :id";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':id', $question_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $question = $stmt->fetch(PDO::FETCH_ASSOC);
+            $sql = "UPDATE question SET question_text = :question_text WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':question_text', $question_text, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $question_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            echo "Question updated successfully!";
+
+            // Re-fetch the updated question to display in the form
+            $sql = "SELECT id, question_text FROM question WHERE id = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $question_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $question = $stmt->fetch(PDO::FETCH_ASSOC);
+        }
     } else {
         $question_id = $_GET["id"];
         $sql = "SELECT id, question_text FROM question WHERE id = :id";
@@ -66,10 +86,11 @@ try {
     </nav>
 </header>
 
-
 <body>
     <h1>Edit Question</h1>
+
     <a href="./admin.php">Retour sur la page adminstrateur</a>
+
     <form method="post" action="edit_question.php">
         <input type="hidden" name="question_id" value="<?php echo htmlspecialchars($question['id']); ?>">
         <label for="question_text">Question:</label>
@@ -77,11 +98,13 @@ try {
             value="<?php echo htmlspecialchars($question['question_text']); ?>" required><br><br>
         <input type="submit" value="Update Question">
     </form>
-    <form method="post" action="delete_question.php" style="margin-top: 20px;">
+
+    <form method="post" action="" style="margin-top: 20px;">
         <input type="hidden" name="question_id" value="<?php echo htmlspecialchars($question['id']); ?>">
         <input type="submit" name="delete" value="Delete Question"
             onclick="return confirm('Are you sure you want to delete this question?');">
     </form>
+
 </body>
 
 </html>

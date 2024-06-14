@@ -1,12 +1,11 @@
 <?php
 require '../config.php'; // Inclure la classe de connexion à la base de données
+require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
     header("Location: ./index.php");
     exit();
 }
-
-require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
 
 try {
     $dbConnection = new ConnectToDatabase();
@@ -45,3 +44,5 @@ try {
     echo "Error: " . $e->getMessage();
     exit();
 }
+
+
