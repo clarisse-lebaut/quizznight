@@ -1,19 +1,14 @@
 <?php
-// Start the session
-session_start();
-
-// Method to connect appli to DataBase
+require '../config/config.php'; // Inclure le fichier de configuration
 require '../class/classConnectDB.php';
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
 
-// Function to check if the user is logged in
 function isLoggedIn()
 {
     return isset($_SESSION['user_id']);
 }
 ?>
-
 <!DOCTYPE html>
 <html>
 
@@ -28,24 +23,21 @@ function isLoggedIn()
         <nav class="navbar">
             <ul>
                 <li><a class="a_style" href="./welcome.php">Accueil</a></li>
-                <?php if (isLoggedIn() && $_SESSION["roles"] == "admin"): ?>
-                    <li><a class="a_style" href="./create_pages/create_quiz.php">Créer un quiz</a></li>
-                    <li><a class="a_style" href="../add_pages/add_answers.php">Ajouter des réponses</a></li>
-                    <li><a class="a_style" href="../add_pages/add_questions.php">Ajouter des questions</a></li>
-                    <li><a class="a_style" href="./admin.php">Gestion</a></li>
-                    <li><a class="a_style" href="./disconnect.php">Déconnexion</a></li>
-                <?php endif; ?>
+                <li><a class="a_style" href="./create_pages/create_quiz.php">Créer un quiz</a></li>
+                <li><a class="a_style" href="../add_pages/add_answers.php">Ajouter des réponses</a></li>
+                <li><a class="a_style" href="../add_pages/add_questions.php">Ajouter des questions</a></li>
+                <li><a class="a_style" href="./admin.php">Gestion</a></li>
+                <li><a class="a_style" href="./disconnect.php">Déconnexion</a></li>
             </ul>
         </nav>
     </header>
     <main>
         <h1>Quiz Night</h1>
         <p class="title">Bienvenue sur Quiz Night !</p>
-        <p class="title">Choisissez un quizz :</p>
+        <p class="title">Choisissez un quiz :</p>
         <hr width="250px">
         <div class="grid_container">
             <?php
-            // Fetch and display quizzes
             $sql = "SELECT q.id, q.title, q.description, u.username AS creator_id FROM quiz q JOIN user u ON q.creator_id = u.id";
             $stmt = $connexion->query($sql);
 
@@ -66,7 +58,6 @@ function isLoggedIn()
             } else {
                 echo "<p>Aucun quiz trouvé.</p>";
             }
-            // Close the database connection
             $connexion = null;
             ?>
         </div>

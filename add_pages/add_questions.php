@@ -1,46 +1,26 @@
 <?php
-session_start();
-
-if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
-    header("Location: ../welcome.php");
-    exit();
-}
-
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "quiznight";
+require '../config/config.php'; // Inclure le fichier de configuration
+require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
+require '../class/classQuestion.php'; // Inclure la classe pour l'ajout de questions
 
 try {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Initialiser la connexion à la base de données
+    $dbConnection = new ConnectToDatabase();
+    $questionObj = new Question($dbConnection);
 
+    $message = '';
     if ($_POST) {
         $quiz_id = $_POST["quiz_id"];
         $question_text = $_POST["question_text"];
-
-        $sql = "INSERT INTO question (quiz_id, question_text) VALUES (:quiz_id, :question_text)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':quiz_id', $quiz_id, PDO::PARAM_INT);
-        $stmt->bindParam(':question_text', $question_text, PDO::PARAM_STR);
-        $stmt->execute();
-
-        echo "Question added successfully!";
+        $message = $questionObj->addQuestion($quiz_id, $question_text);
     }
 
-    // Fetch quizzes
-    $sql = "SELECT id, title FROM quiz";
-    $stmt = $conn->query($sql);
-    $quizzes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Fetch questions
-    $sql = "SELECT id, question_text FROM question";
-    $stmt = $conn->query($sql);
-    $questions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Récupérer les quizzes et les questions
+    $quizzes = $questionObj->getQuizzes();
+    $questions = $questionObj->getQuestions();
 
 } catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
+    echo "Erreur: " . $e->getMessage();
     exit();
 }
 ?>
