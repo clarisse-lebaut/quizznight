@@ -64,7 +64,7 @@ if ($_POST) {
             <br>
             <a class="a_style" href="../index.php">Accueil</a>
             <br>
-            <a class="a_style" href="../pages/create_pages/create_user.php">Nouveau ? Crée toi un compte !</a>
+            <a class="a_style" href="../pages/create_user.php">Nouveau ? Crée toi un compte !</a>
             <p>&copy; 2023 Quiz Night. Tous droits réservés.</p>
         </form>
     </main>

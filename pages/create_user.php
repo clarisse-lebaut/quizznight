@@ -8,7 +8,7 @@ $createUser = new User($dbConnection);
 
 <head>
     <title>Créer un utilisateur - Quiz Night</title>
-    <link rel="stylesheet" href="../../styles/log.css">
+    <link rel="stylesheet" href="../styles/log.css">
 </head>
 
 <body>
@@ -31,9 +31,9 @@ $createUser = new User($dbConnection);
             </select>
             <button type="submit" name="submit">Créer un compte</button>
             <br><br>
-            <a href="../../index.php">Accueil</a>
+            <a href="../index.php">Accueil</a>
             <br>
-            <a href="../login.php">Connexion</a>
+            <a href="./login.php">Connexion</a>
             <p>&copy; 2023 Quiz Night. Tous droits réservés.</p>
         </form>
     </main>

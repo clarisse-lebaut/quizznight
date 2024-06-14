@@ -1,3 +1,4 @@
+
 <?php
 require '../config/config.php'; // Inclure le fhcier de configuration de session
 require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
@@ -34,7 +35,6 @@ try {
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Ajouter une réponse</title>
     <link rel="stylesheet" href="../styles/body.css">
@@ -75,5 +75,4 @@ try {
         <?php endforeach; ?>
     </ul>
 </body>
-
 </html>

@@ -1,8 +1,9 @@
 .navbar {
   display: flex;
   flex-direction: row;
-  background-color: darkcyan;
+  background-color: black;
   box-shadow: 0 0 5px 1px gray;
+  font-size: 25px;
 }
 
 li {
@@ -17,5 +18,5 @@ li {
 }
 
 .a_style:hover {
-  color: blue;
+  color: black;
 }
