@@ -1,0 +1,66 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  overflow: hidden;
+  text-align: center;
+  padding: 50px;
+  font-size: 30px;
+  box-shadow: gray 0 0 10px 1px;
+}
+
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.slide {
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.slider-button-prev,
+.slider-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.slider-button-prev {
+  left: 10px;
+}
+
+.slider-button-next {
+  right: 10px;
+}
+
+#btn_PDF {
+  padding: 15px;
+  border: none;
+  background-color: #f8f8ff;
+  border-radius: 10px;
+  box-shadow: darkgray 0px 0px 5px 1px;
+}
+
+#btn_PDF:hover {
+  background-color: rgba(0, 139, 109, 0.334);
+}
+
+#btn_PDF:active {
+  transform: translateY(10px);
+  box-shadow: darkgray 0px -10px 5px 1px;
+}

@@ -16,17 +16,15 @@
             text-align: center;
         }
     </style>
-    <main class="main">
-        <?php
-        class Footer
+    <?php
+    class Footer
+    {
+        public function Footer()
         {
-            public function Footer()
-            {
-                echo "<p>&copy; 2023 Quiz Night. Tous droits réservés.</p>";
-            }
+            echo "<p>&copy; 2023 Quiz Night. Tous droits réservés.</p>";
         }
-        ?>
-    </main>
+    }
+    ?>
 </body>
 
 </html>

@@ -8,7 +8,6 @@
 </head>
 
 <body>
-    <main class="main">
         <?php
         class NavConnect
         {
@@ -25,7 +24,6 @@
             }
         }
         ?>
-    </main>
 </body>
 
 </html>

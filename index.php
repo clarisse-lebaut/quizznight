@@ -2,12 +2,12 @@
 // Inclure le fichier de configuration
 require './config/config.php';
 
-// Method to connect appli to DataBase
+// Connexion à la base de données
 require './class/classConnectDB.php';
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
 
-// Function to check if the user is logged in
+// Fonction pour vérifier si l'utilisateur est connecté
 function isLoggedIn()
 {
     return isset($_SESSION['user_id']);
@@ -20,7 +20,7 @@ function isLoggedIn()
 <head>
     <title>Quiz Night</title>
     <link rel="stylesheet" href="../styles/body.css">
-    <link rel="stylesheet" href="../styles/index.css">
+    <link rel="stylesheet" href="../styles/index(2).css">
 </head>
 
 <body>
@@ -28,20 +28,19 @@ function isLoggedIn()
         <nav class="navbar">
             <ul>
                 <li><a class="a_style" href="index.php">Accueil</a></li>
+                <li><a class="a_style" href="./pages/create_user.php">Créer un compte</a></li>
+                <li><a class="a_style" href="./pages/login.php">Connexion</a></li>
                 <?php if (isLoggedIn() && $_SESSION["roles"] == "admin"): ?>
                     <li><a class="a_style" href="admin.php">Administration</a></li>
                     <li><a class="a_style" href="create_quiz.php">Créer un quiz</a></li>
                     <li><a class="a_style" href="./config/disconnect.php">Déconnexion</a></li>
                 <?php endif; ?>
-                <li><a class="a_style" href="./pages/create_user.php">Créer un compte</a></li>
-                <li><a class="a_style" href="./pages/login.php">Connexion</a></li>
             </ul>
         </nav>
     </header>
     <main>
         <h1>Quiz Night</h1>
         <p class="title">Bienvenue sur Quiz Night !</p>
-        <p class="title">Choisissez un quizz :</p>
         <hr width="250px">
         <div class="grid_container">
             <?php
@@ -53,8 +52,8 @@ function isLoggedIn()
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<div class='quiz-item'>";
                     echo "<h2>" . htmlspecialchars($row["title"]) . "</h2>";
-                    echo "<p>" . htmlspecialchars($row["description"]) . "</p>";
-                    echo "<p>Créé par: " . (isset($row["creator_id"]) ? htmlspecialchars($row["creator_id"]) : 'N/A') . "</p>";
+                    echo "<p class='quiz_desciprtion'>" . htmlspecialchars($row["description"]) . "</p>";
+                    echo "<p>Créé par : " . (isset($row["creator_id"]) ? htmlspecialchars($row["creator_id"]) : 'N/A') . "</p>";
                     if (isLoggedIn()) {
                         echo "<a href='quiz.php?id=" . htmlspecialchars($row["id"]) . "' class='btn'>Commencer le quiz</a>";
                     }
@@ -66,7 +65,7 @@ function isLoggedIn()
             } else {
                 echo "<p>Aucun quiz trouvé.</p>";
             }
-            // Close the database connection
+            // Fermer la connexion à la base de données
             $connexion = null;
             ?>
         </div>

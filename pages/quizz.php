@@ -56,23 +56,7 @@ $stmt_questions->execute();
     <link rel="stylesheet" href="../styles/navbar.css">
     <link rel="stylesheet" href="../styles/body.css">
     <link rel="stylesheet" href="../styles/welcome.css">
-    <style>
-        .answer-container {
-            display: none;
-            /* Par défaut, les réponses sont cachées */
-            margin-top: 10px;
-        }
-    </style>
-    <script>
-        function toggleAnswer(questionId) {
-            var answerContainer = document.getElementById('answer-container-' + questionId);
-            if (answerContainer.style.display === 'none') {
-                answerContainer.style.display = 'block';
-            } else {
-                answerContainer.style.display = 'none';
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="../styles/quizz(2).css">
 </head>
 
 <body>
@@ -86,46 +70,71 @@ $stmt_questions->execute();
         <h1>Quiz - <?php echo htmlspecialchars($row_quiz['title']); ?></h1>
         <p><?php echo htmlspecialchars($row_quiz['description']); ?></p>
 
-        <?php if ($stmt_questions->rowCount() == 0): ?>
-            <p>Aucune question trouvée pour ce quiz.</p>
-        <?php else: ?>
-            <form method="POST" action="submit_quiz.php">
-                <?php $i = 1; ?>
-                <?php while ($row_questions = $stmt_questions->fetch(PDO::FETCH_ASSOC)): ?>
-                    <h3>Question <?php echo $i; ?></h3>
-                    <p><?php echo htmlspecialchars($row_questions['question_text']); ?></p>
+        <?php
+        function isLoggedIn()
+        {
+            return isset($_SESSION['user_id']);
+        }
+        if (isLoggedIn()) {
+            echo "<form id='PDF' action='generate_pdf.php?id=" . htmlspecialchars($quiz_id) . "' method='POST'>";
+            echo "<button id='btn_PDF' type='submit' name='generate_pdf'>Télécharger le PDF</button>";
+            echo "</form>";
+        }
+        ?>
 
-                    <?php
-                    // Récupération des réponses associées à la question
-                    $sql_answers = "SELECT * FROM answer WHERE question_id = :question_id";
-                    $stmt_answers = $connexion->prepare($sql_answers);
-                    $stmt_answers->bindParam(':question_id', $row_questions['id'], PDO::PARAM_INT);
-                    $stmt_answers->execute();
-                    ?>
-
-                    <button type="button" onclick="toggleAnswer(<?php echo $row_questions['id']; ?>)">
-                        Voir la réponse
-                    </button>
-
-                    <div id="answer-container-<?php echo $row_questions['id']; ?>" class="answer-container">
-                        <ul>
-                            <?php while ($row_answers = $stmt_answers->fetch(PDO::FETCH_ASSOC)): ?>
-                                <li>
-                                    <p id="answer_<?php echo $row_answers['id']; ?>"
-                                        name="question_<?php echo $row_questions['id']; ?>"
-                                        value="<?php echo $row_answers['id']; ?>" required>
-                                    <label
-                                        for="answer_<?php echo $row_answers['id']; ?>"><?php echo htmlspecialchars($row_answers['answer_text']); ?></label>
-                                </li>
-                            <?php endwhile; ?>
-                        </ul>
+        <!-- Slider container -->
+        <div class="slider-container">
+            <div class="slider-wrapper">
+                <!-- Slides -->
+                <?php if ($stmt_questions->rowCount() == 0): ?>
+                    <div class="slide">
+                        <p>Aucune question trouvée pour ce quiz.</p>
                     </div>
+                <?php else: ?>
+                    <?php $i = 1; ?>
+                    <?php while ($row_questions = $stmt_questions->fetch(PDO::FETCH_ASSOC)): ?>
+                        <div class="slide">
+                            <h3>Question <?php echo $i; ?></h3>
+                            <p><?php echo htmlspecialchars($row_questions['question_text']); ?></p>
 
-                    <?php $i++; ?>
-                <?php endwhile; ?>
-            </form>
-        <?php endif; ?>
+                            
+
+                            <?php $i++; ?>
+                        </div>
+                    <?php endwhile; ?>
+                <?php endif; ?>
+            </div>
+
+            <!-- Navigation buttons -->
+            <button class="slider-button-prev" onclick="moveSlide(-1)">&#10094;</button>
+            <button class="slider-button-next" onclick="moveSlide(1)">&#10095;</button>
+        </div>
     </main>
+    <!-- partie pour faire apparaitre le contenue du quiz dans une carrousel -->
+    <script>
+        let currentSlide = 0;
+
+        function moveSlide(direction) {
+            const slides = document.querySelectorAll('.slide');
+            const totalSlides = slides.length;
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            const offset = -currentSlide * 100;
+            document.querySelector('.slider-wrapper').style.transform = `translateX(${offset}%)`;
+        }
+
+        function toggleAnswer(questionId) {
+            const answerContainer = document.getElementById('answer-container-' + questionId);
+            if (answerContainer.style.display === 'none') {
+                answerContainer.style.display = 'block';
+            } else {
+                answerContainer.style.display = 'none';
+            }
+        }
+
+        // Initialize first slide
+        moveSlide(0);
+    </script>
+
 
     <footer>
         <?php $footer->footer(); ?>

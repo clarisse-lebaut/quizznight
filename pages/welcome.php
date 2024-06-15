@@ -22,7 +22,7 @@ function isLoggedIn()
     <title>Quiz Night</title>
     <link rel="stylesheet" href="../styles/navbar.css">
     <link rel="stylesheet" href="../styles/body.css">
-    <link rel="stylesheet" href="../styles/welcome.css">
+    <link rel="stylesheet" href="../styles/welcome(2).css">
 </head>
 
 <body>
@@ -69,14 +69,14 @@ function isLoggedIn()
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<div class='quiz-item'>";
                     echo "<h2>" . htmlspecialchars($row["title"]) . "</h2>";
-                    echo "<p>" . htmlspecialchars($row["description"]) . "</p>";
-                    echo "<p>Créé par: " . (isset($row["creator_id"]) ? htmlspecialchars($row["creator_id"]) : 'N/A') . "</p>";
+                    echo "<p class='quiz_description'>" . htmlspecialchars($row["description"]) . "</p>";
+                    echo "<p>Créé par : " . (isset($row["creator_id"]) ? htmlspecialchars($row["creator_id"]) : 'N/A') . "</p>";
                     echo "<div class='a_card_link'>";
                     if (isLoggedIn()) {
-                        echo "<a class='a_details' href='quizz.php?id=" . htmlspecialchars($row["id"]) . "' class='btn'>Commencer le quiz</a>";
+                        echo "<a class='a_details btn' href='quizz.php?id=" . htmlspecialchars($row["id"]) . "'>Commencer le quiz</a>";
                     }
                     if (isLoggedIn() && $_SESSION["roles"] == "admin") {
-                        echo "<a class='a_details' href='delete_quiz.php?id=" . htmlspecialchars($row["id"]) . "' class='btn'>Supprimer le quiz</a>";
+                        echo "<a class='a_details btn' href='delete_quiz.php?id=" . htmlspecialchars($row["id"]) . "'>Supprimer le quiz</a>";
                     }
                     echo "</div>";
                     echo "</div>";
