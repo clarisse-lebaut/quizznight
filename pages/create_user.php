@@ -8,7 +8,7 @@ $createUser = new User($dbConnection);
 
 <head>
     <title>Créer un utilisateur - Quiz Night</title>
-    <link rel="stylesheet" href="../styles/log.css">
+    <link rel="stylesheet" href="../styles/connect.css">
 </head>
 
 <body>
@@ -26,11 +26,11 @@ $createUser = new User($dbConnection);
 
             <label class="label" for="role">Rôle</label>
             <select id="role" name="role">
-                <option value="user">Utilisateur</option>
-                <option value="admin">Administrateur</option>
+                <option value="user" required>Utilisateur</option>
+                <option value="admin" required>Administrateur</option>
             </select>
             <button type="submit" name="submit">Créer un compte</button>
-            <br><br>
+            <br>
             <a href="../index.php">Accueil</a>
             <br>
             <a href="./login.php">Connexion</a>

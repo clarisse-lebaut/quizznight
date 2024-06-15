@@ -1,6 +1,8 @@
 <?php
 // Inclure le fichier de configuration
 require '../config/config.php';
+require '../class/classFooter.php';
+$footer = new Footer();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
     header("Location: index.php");
@@ -38,8 +40,9 @@ $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
 
 <head>
     <title>Administration - Quiz Night</title>
-    <link rel="stylesheet" href="../styles/nav.css">
-    <link rel="stylesheet" href="../styles/admin.css">
+    <link rel="stylesheet" href="../styles/body.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/admins.css">
 </head>
 
 <body>
@@ -47,14 +50,16 @@ $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
         <nav class="navbar">
             <ul>
                 <li><a class="a_style" href="./welcome.php">Accueil</a></li>
-                <li><a class="a_style" href="./admin.php">Administration</a></li>
-                <li><a class="a_style" href="./disconnect.php">Déconnexion</a></li>
+                <li><a class="a_style" href="./admin.php">Admin</a></li>
+                <li><a class="a_style" href="../config/disconnect.php">Déconnexion</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
-        <h1>Administration</h1>
+        <h1>Pannel administrateur - éditer des éléments</h1>
+        <hr width="500px">
+        <br>
         <div class="grid_container">
             <!-- Users -->
             <div class="users">
@@ -141,7 +146,9 @@ $users = $stmt_users->fetchAll(PDO::FETCH_ASSOC);
     </main>
 
     <footer>
-        <p>&copy; 2023 Quiz Night. Tous droits réservés.</p>
+        <?php
+        $footer->footer();
+        ?>
     </footer>
 </body>
 

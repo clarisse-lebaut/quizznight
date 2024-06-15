@@ -9,6 +9,7 @@ body {
   gap: 20px;
   margin-right: 20px;
   margin-left: 20px;
+  margin-bottom: 50px ;
 }
 
 .quizzes,
@@ -21,6 +22,12 @@ body {
   flex-direction: column;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+.quizzes:hover,
+.questions:hover,
+.answers:hover,
+.users:hover {
+box-shadow: gray 0 0 10px 1px;
 }
 
 h1,

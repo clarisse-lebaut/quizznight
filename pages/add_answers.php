@@ -1,10 +1,11 @@
-
 <?php
 require '../config/config.php'; // Inclure le fhcier de configuration de session
 require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
 require '../class/classAnswer.php'; // Inclure la classe pour l'ajout de réponses
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
+require '../class/classFooter.php';
+$footer = new Footer();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
     header("Location: ./welcome.php");
@@ -35,9 +36,12 @@ try {
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Ajouter une réponse</title>
     <link rel="stylesheet" href="../styles/body.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/add.css">
 </head>
 <header>
     <nav class="navbar">
@@ -49,30 +53,47 @@ try {
 
 <body>
     <h1>Ajouter une réponse</h1>
-    <form method="post" action="">
-        <label for="question_id">Question:</label>
-        <select id="question_id" name="question_id" required>
-            <?php foreach ($questions as $question): ?>
-                <option value="<?php echo htmlspecialchars($question['id']); ?>">
-                    <?php echo htmlspecialchars($question['question_text']); ?></option>
-            <?php endforeach; ?>
-        </select>
-        <br>
-        <label for="answer_text">Réponse:</label>
-        <input type="text" id="answer_text" name="answer_text" required>
-        <br>
-        <input type="submit" value="Ajouter">
-    </form>
+    <main>
+        <div class="container_box">
+            <form method="post" action="">
+                <label for="question_id">Question:</label>
+                <select id="question_id" name="question_id" required>
+                    <?php foreach ($questions as $question): ?>
+                        <option value="<?php echo htmlspecialchars($question['id']); ?>">
+                            <?php echo htmlspecialchars($question['question_text']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="answer_text">Réponse:</label>
+                <input type="text" id="answer_text" name="answer_text" required>
+                <input id="button" type="submit" value="Ajouter">
+            </form>
+        </div>
 
-    <?php if ($message): ?>
-        <p><?php echo htmlspecialchars($message); ?></p>
-    <?php endif; ?>
-
-    <h2>Réponses existantes</h2>
-    <ul>
-        <?php foreach ($answers as $answer): ?>
-            <li><?php echo htmlspecialchars($answer['answer_text']); ?></li>
-        <?php endforeach; ?>
-    </ul>
+        <h2>Réponses</h2>
+        <div class="form_two">
+            <?php
+            $i = 1;
+            foreach ($answers as $answer):
+                ?>
+                <?php
+                echo "<div>";
+                echo $i . " . " . htmlspecialchars($answer['answer_text']);
+                echo "</div>";
+                ?>
+                <?php
+                $i++;
+                ?>
+                <?php
+            endforeach;
+            ?>
+        </div>
+    </main>
+    <footer>
+        <?php
+        $footer->footer();
+        ?>
+    </footer>
 </body>
+
 </html>

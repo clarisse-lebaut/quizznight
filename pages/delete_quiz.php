@@ -1,5 +1,5 @@
 <?php
-require '../config.php'; // Inclure la classe de connexion à la base de données
+require '../config/config.php'; // Inclure la classe de connexion à la base de données
 require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {

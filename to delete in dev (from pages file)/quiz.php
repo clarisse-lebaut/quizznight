@@ -7,10 +7,12 @@ $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
+require '../class/classFooter.php';
+$footer = new Footer();
 
 // Vérification des autorisations d'accès
 if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "admin") {
-    header("Location: ./index.php");
+    header("Location: ../index.php");
     exit();
 }
 
@@ -100,7 +102,9 @@ $stmt_questions->execute();
     </main>
 
     <footer>
-        <p>&copy; 2023 Quiz Night. Tous droits réservés.</p>
+        <?php
+        $footer->footer();
+        ?>
     </footer>
 </body>
 

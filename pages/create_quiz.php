@@ -6,6 +6,8 @@ require '../class/classNavBar.php';
 $navBar = new NavConnect();
 $dbConnection = new ConnectToDatabase();
 $quiz = new Quiz($dbConnection);
+require '../class/classFooter.php';
+$footer = new Footer();
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../login.php');
@@ -27,6 +29,8 @@ if ($_POST) {
 <head>
     <title>Créer un quiz</title>
     <link rel="stylesheet" href="../styles/body.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/create_quizz.css">
 </head>
 
 <body>
@@ -45,14 +49,15 @@ if ($_POST) {
             <input type="text" id="title" name="title" required>
             <br>
             <label for="description">Description:</label>
-            <textarea id="description" name="description" required></textarea>
-            <br>
-            <input type="submit" value="Créer">
+            <textarea id="description" name="description" rows="5" cols="33" required></textarea>
+            <button type="submit">Créer</button>
         </form>
     </main>
 
     <footer>
-        <p>&copy; 2023 Quiz Night. Tous droits réservés.</p>
+        <?php
+        $footer->footer();
+        ?>
     </footer>
 </body>
 

@@ -3,6 +3,8 @@ require '../class/classNavBar.php';
 $navBar = new NavConnect();
 // Inclure le fichier de configuration
 require '../config/config.php';
+require '../class/classFooter.php';
+$footer = new Footer();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
     header("Location: ./welcome.php");
@@ -14,11 +16,14 @@ $username = "root";
 $password = "";
 $dbname = "quiznight";
 
+$messageUpdate = "";
+$messageDeleted = "";
+
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST) {
         if (isset($_POST["delete"])) {
             // Handle delete answer
             $answer_id = $_POST["answer_id"];
@@ -26,7 +31,9 @@ try {
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id', $answer_id, PDO::PARAM_INT);
             $stmt->execute();
-            echo "Answer deleted successfully!";
+
+            $messageDeleted = "Réponse supprimée avec succès !";
+
             header("Location: admin.php"); // Redirect back to admin page after deletion
             exit();
         } else {
@@ -40,7 +47,7 @@ try {
             $stmt->bindParam(':id', $answer_id, PDO::PARAM_INT);
             $stmt->execute();
 
-            echo "Answer updated successfully!";
+            $messageUpdate = "Réponse mise à jour réussi avec succès !";
 
             // Re-fetch the updated answer to display in the form
             $sql = "SELECT id, answer_text FROM answer WHERE id = :id";
@@ -68,8 +75,9 @@ try {
 
 <head>
     <title>Edit Answer</title>
-    <link rel="stylesheet" href="../styles/nav.css">
     <link rel="stylesheet" href="../styles/body.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/edit.css">
 </head>
 
 <header>
@@ -81,24 +89,35 @@ try {
 </header>
 
 <body>
-    <h1>Edit Answer</h1>
+    <main>
+        <h1>Editer la réponse du Quiz : <?php echo htmlspecialchars($answer['id']); ?></h1>
 
-    <a href="./admin.php">Retour sur la page adminstrateur</a>
+        <form method="POST" action="edit_answer.php">
+            <input type="hidden" name="answer_id" value="<?php echo htmlspecialchars($answer['id']); ?>">
+            <div id="container_one">
+                <div id="box">
+                    <label for="answer_text">Answer:</label>
+                    <input type="text" id="answer_text" name="answer_text"
+                        value="<?php echo htmlspecialchars($answer['answer_text']); ?>" required><br><br>
+                </div>
+            </div>
+            <div id="container_two">
+                <button class="btn_one" type="submit">Mettre à jour</button>
+                <input type="hidden" name="answer_id" value="<?php echo htmlspecialchars($answer['id']); ?>">
+                <button class="btn_two" type="submit" name="delete"
+                    onclick="return confirm('Are you sure you want to delete this answer?');">Supprimer</button>
+            </div>
+        </form>
 
-    <form method="post" action="edit_answer.php">
-        <input type="hidden" name="answer_id" value="<?php echo htmlspecialchars($answer['id']); ?>">
-        <label for="answer_text">Answer:</label>
-        <input type="text" id="answer_text" name="answer_text"
-            value="<?php echo htmlspecialchars($answer['answer_text']); ?>" required><br><br>
-        <input type="submit" value="Update Answer">
-    </form>
-
-    <form method="post" action="" style="margin-top: 20px;">
-        <input type="hidden" name="answer_id" value="<?php echo htmlspecialchars($answer['id']); ?>">
-        <input type="submit" name="delete" value="Delete Answer"
-            onclick="return confirm('Are you sure you want to delete this answer?');">
-    </form>
-
+        <p class="msg"><?php echo $messageUpdate ?></p>
+        <p class="msg"><?php echo $messageDeleted ?></p>
+        <a href="./admin.php">Retour sur la page adminstrateur</a>
+    </main>
+    <footer>
+        <?php
+        $footer->footer();
+        ?>
+    </footer>
 </body>
 
 </html>

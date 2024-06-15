@@ -1,10 +1,12 @@
 <?php
 require '../config/config.php'; // Inclure le fichier de configuration
 require '../class/classConnectDB.php';
-require '../class/classNavBar.php';
-$navBar = new NavConnect();
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
+require '../class/classNavBar.php';
+$navBar = new NavConnect();
+require '../class/classFooter.php';
+$footer = new Footer();
 
 function isLoggedIn()
 {
@@ -15,9 +17,12 @@ function isLoggedIn()
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Night</title>
-    <link rel="stylesheet" href="../index.css">
-    <link rel="stylesheet" href="../styles/nav.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/body.css">
+    <link rel="stylesheet" href="../styles/welcome.css">
 </head>
 
 <body>
@@ -30,9 +35,31 @@ function isLoggedIn()
     </header>
     <main>
         <h1>Quiz Night</h1>
-        <p class="title">Bienvenue sur Quiz Night <?php echo htmlspecialchars($_SESSION['username']); ?> !</p>
-        <p class="title">Choisissez un quiz :</p>
+
+        <p class="title">Hey <?php echo htmlspecialchars($_SESSION['username']); ?>!</p>
+
+        <br>
+        <p class="title">Que souhaitez-vous faire ?</p>
         <hr width="250px">
+        <br>
+
+        <div class="card_link_container">
+            <div class="card_link_box">
+                <a class='a_card' href='../pages/create_quiz.php'>Créer un quiz</a>
+            </div>
+            <div class="card_link_box">
+                <a class='a_card' href='../pages/add_questions.php'>Ajouter questions</a>
+            </div>
+            <div class="card_link_box">
+                <a class='a_card' href='../pages/add_answers.php'>Ajouter réponses</a>
+            </div>
+        </div>
+
+        <br><br>
+        <p class="title">Dans quel domaine voulez-vous tester votre savoir ?</p>
+        <hr width="250px">
+        <br>
+
         <div class="grid_container">
             <?php
             $sql = "SELECT q.id, q.title, q.description, u.username AS creator_id FROM quiz q JOIN user u ON q.creator_id = u.id";
@@ -44,12 +71,14 @@ function isLoggedIn()
                     echo "<h2>" . htmlspecialchars($row["title"]) . "</h2>";
                     echo "<p>" . htmlspecialchars($row["description"]) . "</p>";
                     echo "<p>Créé par: " . (isset($row["creator_id"]) ? htmlspecialchars($row["creator_id"]) : 'N/A') . "</p>";
+                    echo "<div class='a_card_link'>";
                     if (isLoggedIn()) {
-                        echo "<a href='quiz.php?id=" . htmlspecialchars($row["id"]) . "' class='btn'>Commencer le quiz</a>";
+                        echo "<a class='a_details' href='quizz.php?id=" . htmlspecialchars($row["id"]) . "' class='btn'>Commencer le quiz</a>";
                     }
                     if (isLoggedIn() && $_SESSION["roles"] == "admin") {
-                        echo "<a href='delete_quiz.php?id=" . htmlspecialchars($row["id"]) . "' class='btn'>Supprimer le quiz</a>";
+                        echo "<a class='a_details' href='delete_quiz.php?id=" . htmlspecialchars($row["id"]) . "' class='btn'>Supprimer le quiz</a>";
                     }
+                    echo "</div>";
                     echo "</div>";
                 }
             } else {
@@ -60,7 +89,9 @@ function isLoggedIn()
         </div>
     </main>
     <footer>
-        <p>&copy; 2023 Quiz Night. Tous droits réservés.</p>
+        <?php
+        $footer->footer();
+        ?>
     </footer>
 </body>
 

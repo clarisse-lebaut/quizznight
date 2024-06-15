@@ -1,0 +1,84 @@
+h1,
+.title {
+  text-align: center;
+}
+
+.card_link_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.card_link_box {
+  display: flex;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 1px #dcdcdc;
+  height: 200px;
+  width: 200px;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 139, 109, 0.334);
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.card_link_box:hover {
+  transform: translateY(-20px);
+  background-color: white;
+  box-shadow: darkgray 10px 10px 5px 1px;
+}
+
+.a_card {
+  text-decoration: none;
+  color: darkblue;
+  text-align: center;
+  font-size: 30px;
+}
+
+.a_card:hover {
+  text-shadow: 0 10px 10px gray;
+}
+
+.grid_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.quiz-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 10px;
+  margin: 20px;
+  box-shadow: 0 0 10px 1px #dcdcdc;
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out,
+    background-color 0.3s ease-in-out;
+}
+
+.quiz-item:hover {
+  transform: translateY(-20px);
+  box-shadow: 0 20px 10px 1px #dcdcdc;
+  background-color: rgba(0, 139, 109, 0.334);
+}
+
+.a_details {
+  color: blue;
+  text-decoration: none;
+}
+
+.a_details:hover {
+  color: gray;
+}
+
+.a_card_link {
+  display: flex;
+  gap: 20px;
+}

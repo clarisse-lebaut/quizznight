@@ -3,6 +3,8 @@ require '../class/classNavBar.php';
 $navBar = new NavConnect();
 // Inclure le fichier de configuration
 require '../config/config.php';
+require '../class/classFooter.php';
+$footer = new Footer();
 
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
     header("Location: ./welcome.php");
@@ -14,11 +16,13 @@ $username = "root";
 $password = "";
 $dbname = "quiznight";
 
+$messageConfirmed = ""; // Déclarez la variable ici pour l'utiliser plus tard
+
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_POST) {
         if (isset($_POST["delete"])) {
             // Handle delete user
             $user_id = $_POST["user_id"];
@@ -26,8 +30,8 @@ try {
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
             $stmt->execute();
-            echo "User deleted successfully!";
-            header("Location: ./admin.php"); // Redirect back to admin page after deletion
+            // Redirect back to admin page after deletion
+            header("Location: ./admin.php");
             exit();
         } else {
             // Handle update user
@@ -44,14 +48,14 @@ try {
             $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
             $stmt->execute();
 
-            echo "User updated successfully!";
-
             // Re-fetch the updated user to display in the form
             $sql = "SELECT id, username, email, roles FROM user WHERE id = :id";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $messageConfirmed = "Utilisateur mis a jour avec succès !";
         }
     } else {
         $user_id = $_GET["id"];
@@ -72,8 +76,9 @@ try {
 
 <head>
     <title>Edit User</title>
-    <link rel="stylesheet" href="../styles/nav.css">
     <link rel="stylesheet" href="../styles/body.css">
+    <link rel="stylesheet" href="../styles/navbar.css">
+    <link rel="stylesheet" href="../styles/edit.css">
 </head>
 
 <header>
@@ -85,30 +90,43 @@ try {
 </header>
 
 <body>
-    <h1>Edit User</h1>
+    <main>
+        <h1>Editer l'utilisateur : <?php echo htmlspecialchars($user['username']); ?></h1>
 
-    <a href="./admin.php">Retour sur la page adminstrateur</a>
-
-    <form method="post" action="edit_user.php">
-        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>"
-            required><br><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>"
-            required><br><br>
-        <label for="roles">Roles:</label>
-        <input type="text" id="roles" name="roles" value="<?php echo htmlspecialchars($user['roles']); ?>"
-            required><br><br>
-        <input type="submit" value="Update User">
-    </form>
-
-    <form method="post" action="edit_user.php" style="margin-top: 20px;">
-        <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
-        <input type="submit" name="delete" value="Delete User"
-            onclick="return confirm('Are you sure you want to delete this user?');">
-    </form>
-
+        <form method="POST" action="edit_user.php">
+            <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
+            <div id="container_one">
+                <div id="box">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username"
+                        value="<?php echo htmlspecialchars($user['username']); ?>" required><br><br>
+                </div>
+                <div id="box">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>"
+                        required><br><br>
+                </div>
+                <div id="box">
+                    <label for="roles">Roles</label>
+                    <input type="text" id="roles" name="roles" value="<?php echo htmlspecialchars($user['roles']); ?>"
+                        required><br><br>
+                </div>
+            </div>
+            <div id="container_two">
+                <button class="btn_one" type="submit">Mettre à jour</button>
+                <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
+                <button class="btn_two" type="submit" name="delete"
+                    onclick="return confirm('Are you sure you want to delete this user?');">Supprimer</button>
+            </div>
+        </form>
+        <p class="msg"><?php echo $messageConfirmed ?></p>
+        <a href="./admin.php">Retour sur la page adminstrateur</a>
+    </main>
+    <footer>
+        <?php
+        $footer->footer();
+        ?>
+    </footer>
 </body>
 
 </html>

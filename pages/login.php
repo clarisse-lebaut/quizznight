@@ -40,7 +40,7 @@ if ($_POST) {
 
 <head>
     <title>Connexion - Quiz Night</title>
-    <link rel="stylesheet" href="../styles/log.css">
+    <link rel="stylesheet" href="../styles/connect.css">
 </head>
 
 <body>
@@ -60,7 +60,6 @@ if ($_POST) {
             <input type="password" id="password" name="password" required>
 
             <button type="submit" name="submit">Se connecter</button>
-            <br>
             <br>
             <a class="a_style" href="../index.php">Accueil</a>
             <br>
