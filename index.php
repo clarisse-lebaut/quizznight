@@ -1,13 +1,12 @@
 <?php
-// Inclure le fichier de configuration
+// Include configuration file
 require './config/config.php';
-
-// Connexion à la base de données
+// Include database connection and instantiate it
 require './class/classConnectDB.php';
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
 
-// Fonction pour vérifier si l'utilisateur est connecté
+// Function to check if the user is logged in
 function isLoggedIn()
 {
     return isset($_SESSION['user_id']);
@@ -65,7 +64,7 @@ function isLoggedIn()
             } else {
                 echo "<p>Aucun quiz trouvé.</p>";
             }
-            // Fermer la connexion à la base de données
+            // Close database connection
             $connexion = null;
             ?>
         </div>

@@ -1,7 +1,8 @@
 <?php
-require '../config/config.php'; // Inclure le fhcier de configuration de session
-require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
-require '../class/classAnswer.php'; // Inclure la classe pour l'ajout de réponses
+// Include files and instantiate it
+require '../config/config.php';
+require '../class/classConnectDB.php';
+require '../class/classAnswer.php';
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
 require '../class/classFooter.php';
@@ -13,7 +14,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
 }
 
 try {
-    // Initialiser la connexion à la base de données
+    // Instantiate database connection
     $dbConnection = new ConnectToDatabase();
     $answerObj = new Answer($dbConnection);
 
@@ -24,7 +25,7 @@ try {
         $message = $answerObj->addAnswer($question_id, $answer_text);
     }
 
-    // Récupérer les questions et les réponses
+    // Get questions and answers
     $questions = $answerObj->getQuestions();
     $answers = $answerObj->getAnswers();
 
@@ -73,6 +74,7 @@ try {
         <h2>Réponses</h2>
         <div class="form_two">
             <?php
+            // Initalise a counter to add a number before the questions
             $i = 1;
             foreach ($answers as $answer):
                 ?>

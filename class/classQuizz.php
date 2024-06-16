@@ -1,5 +1,5 @@
 <?php
-require '../config/config.php'; // Inclure le fichier de configuration
+require '../config/config.php';
 
 class Quiz
 {

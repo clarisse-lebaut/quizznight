@@ -1,31 +1,31 @@
 <?php
-require '../config/config.php'; // Inclure le fichier de configuration
+// Include files and instantiate it
+require '../config/config.php';
 require '../class/classConnectDB.php';
-require '../class/classNavBar.php';
-require '../class/classFooter.php';
-
-// Connexion à la base de données
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
+require '../class/classNavBar.php';
 $navBar = new NavConnect();
+require '../class/classFooter.php';
 $footer = new Footer();
 
-// Vérification des autorisations d'accès
+
+// Checking access permissions
 if (!isset($_SESSION["user_id"])) {
     header("Location: ../index.php");
     exit();
 }
 
-// Vérification de l'existence de l'identifiant de quiz dans l'URL
+// Checking for existence of quiz id in URL
 if (!isset($_GET['id'])) {
     echo "ID de quiz non spécifié dans l'URL.";
     exit();
 }
 
-// Récupération de l'identifiant du quiz depuis l'URL
+// Retrieving the quiz ID from the URL
 $quiz_id = $_GET['id'];
 
-// Vérification de l'existence du quiz dans la base de données
+// Checking the existence of the quiz in the database
 $sql_quiz = "SELECT * FROM quiz WHERE id = :quiz_id";
 $stmt_quiz = $connexion->prepare($sql_quiz);
 $stmt_quiz->bindParam(':quiz_id', $quiz_id, PDO::PARAM_INT);
@@ -36,10 +36,10 @@ if ($stmt_quiz->rowCount() == 0) {
     exit();
 }
 
-// Récupération des informations sur le quiz
+// Retrieving quiz information
 $row_quiz = $stmt_quiz->fetch(PDO::FETCH_ASSOC);
 
-// Récupération des questions associées au quiz
+// Retrieving questions associated with the quiz
 $sql_questions = "SELECT * FROM question WHERE quiz_id = :quiz_id";
 $stmt_questions = $connexion->prepare($sql_questions);
 $stmt_questions->bindParam(':quiz_id', $quiz_id, PDO::PARAM_INT);
@@ -110,7 +110,7 @@ $stmt_questions->execute();
             <button class="slider-button-next" onclick="moveSlide(1)">&#10095;</button>
         </div>
     </main>
-    <!-- partie pour faire apparaitre le contenue du quiz dans une carrousel -->
+    <!-- Part to make appear the quizz in a carroussel -->
     <script>
         let currentSlide = 0;
 

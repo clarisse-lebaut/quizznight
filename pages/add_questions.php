@@ -1,7 +1,8 @@
 <?php
-require '../config/config.php'; // Inclure le fichier de configuration de session
-require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
-require '../class/classQuestion.php'; // Inclure la classe pour la gestion des questions
+// Include files and instantiate it
+require '../config/config.php';
+require '../class/classConnectDB.php';
+require '../class/classQuestion.php';
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
 require '../class/classFooter.php';
@@ -13,22 +14,23 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
 }
 
 try {
-    // Initialiser la connexion à la base de données
+    // Instantiate database connection
     $dbConnection = new ConnectToDatabase();
     $questionObj = new Question($dbConnection);
 
     $message = '';
     if ($_POST) {
-        // Code pour ajouter une nouvelle question
+        // Code to add a new question
         $quiz_id = $_POST["quiz_id"];
         $question_text = $_POST["question_text"];
         $questionObj->addQuestion($quiz_id, $question_text);
     }
 
-    // Récupérer les quiz disponibles
-    $quizs = $questionObj->getQuizzes(); // Méthode à implémenter dans votre classe Question
+    // Get available quiz
+    // Method to put in classQuestions.php
+    $quizs = $questionObj->getQuizzes();
 
-    // Récupérer les questions
+    // Get the questions
     $questions = $questionObj->getQuestions();
 
 } catch (PDOException $e) {
@@ -76,6 +78,7 @@ try {
         <h2>Questions</h2>
         <div class="form_two">
             <?php
+            // Initalise a counter to add a number before the questions
             $i = 1;
             foreach ($questions as $question):
                 ?>

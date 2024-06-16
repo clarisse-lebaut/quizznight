@@ -1,19 +1,22 @@
 <?php
-require '../config/config.php'; // Inclure le fichier de configuration
-require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
-require '../class/classQuizz.php'; // Inclure la classe Quiz
+// Include files and instantiate it
+require '../config/config.php';
+require '../class/classConnectDB.php';
+$dbConnection = new ConnectToDatabase();
+require '../class/classQuizz.php';
+$quiz = new Quiz($dbConnection);
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
-$dbConnection = new ConnectToDatabase();
-$quiz = new Quiz($dbConnection);
 require '../class/classFooter.php';
 $footer = new Footer();
 
+// Checking access permissions
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../login.php');
     exit();
 }
 
+// Method _POST to put data in database
 if ($_POST) {
     $title = $_POST['title'];
     $description = $_POST['description'];

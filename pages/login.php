@@ -1,25 +1,26 @@
 <?php
-// Inclure le fichier de configuration
+// Include files and instantiate it
 require '../config/config.php';
-// Method to connect appli to DataBase
 require '../class/classConnectDB.php';
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
 
+// Instantiate var to have an error message
 $error_message = "";
 
 if ($_POST) {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    // Hachage du mot de passe
+    // Hacsh password
     $hashed_password = hash('sha256', $password);
 
-    // Vérifier les identifiants dans la base de données
+    // Check IDs in database
     $sql = "SELECT id, username, roles FROM user WHERE username = :username AND password = :password";
     $stmt = $connexion->prepare($sql);
     $stmt->bindParam(':username', $username);
-    $stmt->bindParam(':password', $hashed_password); // Utilisation du mot de passe haché
+    // Use hacsh password
+    $stmt->bindParam(':password', $hashed_password);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -47,6 +48,7 @@ if ($_POST) {
 
     <main>
         <h1>CONNEXION</h1>
+        <!-- Condition for error message -->
         <?php
         if (!empty($error_message)) {
             echo "<p class='error'>$error_message</p>";
@@ -72,6 +74,6 @@ if ($_POST) {
 </html>
 
 <?php
-// Fermer la connexion à la base de données
+// Close database connection
 $connexion = null;
 ?>

@@ -1,13 +1,18 @@
 <?php
-require '../config/config.php'; // Inclure le fichier de configuration
+// Include configuration file
+require '../config/config.php';
+// Include database connection file and instantiate it
 require '../class/classConnectDB.php';
 $dbConnection = new ConnectToDatabase();
 $connexion = $dbConnection->getConnexion();
+// Include navbar file and instantiate it
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
+// Include footer fil and instantiate it
 require '../class/classFooter.php';
 $footer = new Footer();
 
+// Function to check if the user is connected
 function isLoggedIn()
 {
     return isset($_SESSION['user_id']);
@@ -43,6 +48,7 @@ function isLoggedIn()
         <hr width="250px">
         <br>
 
+        <!-- Card with link to create and add elements -->
         <div class="card_link_container">
             <div class="card_link_box">
                 <a class='a_card' href='../pages/create_quiz.php'>Créer un quiz</a>
@@ -62,6 +68,7 @@ function isLoggedIn()
 
         <div class="grid_container">
             <?php
+            // Request to select elements and informations from quiz
             $sql = "SELECT q.id, q.title, q.description, u.username AS creator_id FROM quiz q JOIN user u ON q.creator_id = u.id";
             $stmt = $connexion->query($sql);
 

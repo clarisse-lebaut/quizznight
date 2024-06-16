@@ -1,5 +1,6 @@
 <?php
-require '../config/config.php'; // Inclure le fichier de configuration
+// Include files and instantiate it
+require '../config/config.php';
 require '../class/classUser.php';
 $createUser = new User($dbConnection);
 ?>

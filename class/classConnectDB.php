@@ -7,7 +7,7 @@ class ConnectToDatabase
     {
         try {
             $this->connexion = new PDO('mysql:host=localhost;dbname=quiznight;charset=utf8', "root", "");
-            // Configure l'exception PDO pour gérer les erreurs
+            // Configure the PDO exception to handle errors
             $this->connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die("Erreur de connexion : " . $e->getMessage());

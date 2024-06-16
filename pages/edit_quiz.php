@@ -1,8 +1,8 @@
 <?php
+// Include files instantiate it
+require '../config/config.php';
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
-// Inclure le fichier de configuration
-require '../config/config.php';
 require '../class/classFooter.php';
 $footer = new Footer();
 

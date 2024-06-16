@@ -1,11 +1,12 @@
 <?php
+// Include files and instantiate it
+require '../config/config.php';
 require '../class/classNavBar.php';
 $navBar = new NavConnect();
-// Inclure le fichier de configuration
-require '../config/config.php';
 require '../class/classFooter.php';
 $footer = new Footer();
 
+// Checking access permissions
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] !== "admin") {
     header("Location: ./welcome.php");
     exit();

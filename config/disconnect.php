@@ -1,18 +1,18 @@
 <?php
-// Inclure le fichier de configuration
+// Include files of session config
 require './config.php';
 
-// Détruire toutes les variables de session
+// Destroy all session variable
 $_SESSION = array();
 
-// Supprimer le cookie de session
+// Deleted all session's cookie
 if (isset($_COOKIE[session_name()])) {
     setcookie(session_name(), '', time()-42000, '/');
 }
 
-// Détruire la session
+// Destroy the session
 session_destroy();
 
-// Rediriger vers la page d'accueil ou une autre page après la déconnexion
+// Redirect to homepage or another page after logout
 header("Location: ../index.php");
 exit();

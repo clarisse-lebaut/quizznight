@@ -1,13 +1,16 @@
 <?php
-require '../config/config.php'; // Inclure la classe de connexion à la base de données
-require '../class/classConnectDB.php'; // Inclure la classe de connexion à la base de données
+// Include files
+require '../config/config.php';
+require '../class/classConnectDB.php';
 
+// Checking access permissions
 if (!isset($_SESSION["user_id"]) || $_SESSION["roles"] != "admin") {
     header("Location: ./index.php");
     exit();
 }
 
 try {
+    // Instantiate it
     $dbConnection = new ConnectToDatabase();
     $conn = $dbConnection->getConnexion();
 

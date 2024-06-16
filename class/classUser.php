@@ -1,6 +1,7 @@
 <?php
-require 'classConnectDB.php'; // Inclure la classe de connexion à la base de données
-require '../config/config.php'; // Inclure le fichier de configuration
+// Include files and instantiate it
+require 'classConnectDB.php';
+require '../config/config.php';
 
 class User
 {
@@ -39,7 +40,7 @@ class User
     }
 }
 
-// Créer une instance de connexion à la base de données
+// Create a database connection instance
 $dbConnection = new ConnectToDatabase();
 $user = new User($dbConnection);
 $user->handleFormSubmission();
