@@ -44,7 +44,7 @@ $stmt_questions->execute();
 $questions = $stmt_questions->fetchAll(PDO::FETCH_ASSOC); // Récupérer toutes les questions
 
 // Utilisation de Dompdf
-require_once '../vendor/autoload.php'; // Inclure l'autoloader de Composer
+require_once '../vendor/autoload.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -57,7 +57,7 @@ function createPDF($row_quiz, $questions)
 
     $dompdf = new Dompdf($options);
 
-    // Contenu HTML que vous souhaitez convertir en PDF
+    // Contenu HTML à convertir en PDF
     $html = '<html>
 
     <head>
@@ -86,7 +86,7 @@ function createPDF($row_quiz, $questions)
     $html .= '<h1> Quizz : ' . htmlspecialchars($row_quiz['title']) . '</h1>';
     $html .= '<p>' . htmlspecialchars($row_quiz['description']) . '</p>';
 
-    // Ajouter les questions et potentiellement les réponses
+    // Ajouter les questions et les réponses
     foreach ($questions as $question) {
         $dbConnection = new ConnectToDatabase();
         $connexion = $dbConnection->getConnexion();
@@ -94,7 +94,7 @@ function createPDF($row_quiz, $questions)
         $html .= '<div class="card_question">';
         $html .= '<h3>' . htmlspecialchars($question['question_text']) . '</h3>';
 
-        // Récupération des réponses pour cette question (s'il y a lieu)
+        // Récupération des réponses
         $sql_answers = "SELECT * FROM answer WHERE question_id = :question_id";
         $stmt_answers = $connexion->prepare($sql_answers);
         $stmt_answers->bindParam(':question_id', $question['id'], PDO::PARAM_INT);
@@ -112,19 +112,20 @@ function createPDF($row_quiz, $questions)
     // Charger le contenu HTML dans Dompdf
     $dompdf->loadHtml($html);
 
-    // (Optionnel) Définir les options de rendu PDF (taille de papier, etc.)
+    // Définir les options de rendu PDF
     $dompdf->setPaper('A4', 'portrait'); // Format A4, mode portrait
 
-    // Rendu du PDF (génération)
+    // Génération du PDF
     $dompdf->render();
 
-    // Affichage du PDF dans le navigateur ou téléchargement
+    // Affichage du PDF dans le navigateur pour pouvoir le télécharger
     $dompdf->stream('document.pdf', array('Attachment' => 0));
 }
 
 // Vérifier si le formulaire a été soumis pour générer le PDF
 if (isset($_POST['generate_pdf'])) {
-    createPDF($row_quiz, $questions); // Appel de la fonction pour générer le PDF
+    // Appel de la fonction pour générer le PDF
+    createPDF($row_quiz, $questions);
 }
 
 
